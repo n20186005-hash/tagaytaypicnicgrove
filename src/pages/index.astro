@@ -1,69 +1,95 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { faqJsonLd } from '../data/faq';
+import { faqJsonLd as faqJsonLdEn } from '../data/faq';
 import { gallery, heroImage, heroImageOg } from '../data/gallery';
-import { itineraryPool } from '../data/itinerary';
-import { nearbyFood } from '../data/food';
-import { nearbySpots } from '../data/nearby';
-import { transport } from '../data/transport';
-import { feesAndTickets } from '../data/fees';
-import { bestTime } from '../data/best-time';
-import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
+import { mapsUrl, mapsEmbedSrc } from '../config';
+import { getTranslations } from '../i18n';
+import type { LanguageCode } from '../i18n/types';
+
+const translations = {
+  en: getTranslations('en' as LanguageCode),
+  fil: getTranslations('fil' as LanguageCode),
+};
+
+const t = translations.en;
+const ui = t.ui;
 ---
 
-<BaseLayout faqJsonLd={faqJsonLd} ogImage={heroImageOg}>
+<BaseLayout faqJsonLd={faqJsonLdEn} ogImage={heroImageOg}>
+  <script is:inline set:html={`window.__TRANSLATIONS__ = ${JSON.stringify({
+    en: translations.en,
+    fil: translations.fil,
+  })};`}></script>
+
   <header class="sticky top-0 z-40 border-b border-forest-200/60 bg-cream/90 backdrop-blur">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
       <a href="#top" class="flex items-center gap-2">
         <img src="/logo.svg" alt="" width="36" height="36" class="h-9 w-9" />
         <span class="font-serif text-lg font-bold text-forest-800 sm:text-xl">Tagaytay Picnic Grove</span>
       </a>
-      <nav class="hidden items-center gap-1 text-sm font-medium text-muted md:flex">
-        <a href="#overview" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Overview</a>
-        <a href="#fees" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Fees</a>
-        <a href="#parking" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Parking</a>
-        <a href="#best-time" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Best Time</a>
-        <a href="#transport" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Transport</a>
-        <a href="#food" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Food</a>
-        <a href="#nearby" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Nearby</a>
-        <a href="#gallery" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Gallery</a>
-        <a href="#faq" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">FAQ</a>
+      <nav class="hidden items-center gap-1 text-sm font-medium text-muted md:flex" data-i18n-nav>
+        <a href="#overview" data-i18n="nav.overview" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Overview</a>
+        <a href="#fees" data-i18n="nav.fees" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Fees</a>
+        <a href="#parking" data-i18n="nav.parking" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Parking</a>
+        <a href="#best-time" data-i18n="nav.bestTime" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Best Time</a>
+        <a href="#transport" data-i18n="nav.transport" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Transport</a>
+        <a href="#food" data-i18n="nav.food" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Food</a>
+        <a href="#nearby" data-i18n="nav.nearby" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Nearby</a>
+        <a href="#gallery" data-i18n="nav.gallery" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Gallery</a>
+        <a href="#faq" data-i18n="nav.faq" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">FAQ</a>
       </nav>
-      <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="hidden rounded-lg bg-sunset-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-sunset-600 sm:inline-flex">View on Map</a>
+      <div class="flex items-center gap-2">
+        <div id="lang-switcher" class="relative">
+          <button id="lang-toggle" aria-label="Language" class="flex items-center gap-1.5 rounded-lg border border-forest-200 bg-white px-3 py-2 text-sm font-medium text-forest-800 hover:bg-forest-50">
+            <span id="lang-flag" aria-hidden="true">🇺🇸</span>
+            <span id="lang-label" class="hidden sm:inline">English</span>
+            <svg class="h-3.5 w-3.5 text-muted" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4.5l3 3 3-3"/></svg>
+          </button>
+          <div id="lang-menu" class="hidden absolute right-0 mt-1 w-40 overflow-hidden rounded-xl border border-forest-200 bg-white shadow-lg z-50">
+            <button data-lang-choice="en" class="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm hover:bg-forest-50 active-lang">
+              <span>🇺🇸</span><span><strong>English</strong><br><span class="text-xs text-muted">English</span></span>
+            </button>
+            <button data-lang-choice="fil" class="flex w-full items-center gap-2 px-3 py-2.5 text-left text-sm hover:bg-forest-50">
+              <span>🇵🇭</span><span><strong>Tagalog</strong><br><span class="text-xs text-muted">Filipino</span></span>
+            </button>
+          </div>
+        </div>
+        <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="nav.viewOnMap" class="hidden rounded-lg bg-sunset-500 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-sunset-600 sm:inline-flex">View on Map</a>
+      </div>
     </div>
   </header>
 
   <section id="top" class="relative isolate overflow-hidden">
     <div class="absolute inset-0 -z-10">
-      <img src={heroImage} alt="" class="h-full w-full object-cover" />
+      <img id="hero-img" src={heroImage} alt="" class="h-full w-full object-cover" />
       <div class="absolute inset-0 bg-gradient-to-b from-forest-950/60 via-forest-950/40 to-forest-950/80"></div>
     </div>
     <div class="mx-auto max-w-7xl px-4 pb-28 pt-20 sm:px-6 lg:px-8 lg:pb-36 lg:pt-28">
       <div class="max-w-3xl text-cream">
-        <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm ring-1 ring-white/20 backdrop-blur">Taal Volcano ridge · Tagaytay City, Cavite</span>
-        <h1 class="mt-5 font-serif text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">Tagaytay Picnic Grove</h1>
-        <p class="mt-5 max-w-2xl text-lg text-cream/90 sm:text-xl">Ridge-top picnic cottages, BBQ with family and barkada, zipline over the ridge, horseback trails, and an unbeatable Taal Volcano view — under two hours from Manila.</p>
+        <span data-i18n="hero.locationTag" class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm ring-1 ring-white/20 backdrop-blur">Taal Volcano ridge · Tagaytay City, Cavite</span>
+        <h1 data-i18n="hero.title" class="mt-5 font-serif text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">Tagaytay Picnic Grove</h1>
+        <p data-i18n="hero.subtitle" class="mt-5 max-w-2xl text-lg text-cream/90 sm:text-xl">Ridge-top picnic cottages, BBQ with family and barkada, zipline over the ridge, horseback trails, and an unbeatable Taal Volcano view — under two hours from Manila.</p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-lg bg-sunset-500 px-5 py-3 text-base font-semibold text-white shadow-lg shadow-sunset-500/30 hover:bg-sunset-600">Get Directions</a>
-          <a href="#itinerary" class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-5 py-3 text-base font-semibold text-cream ring-1 ring-white/25 backdrop-blur hover:bg-white/20">Build Your Trip Checklist</a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="hero.getDirections" class="inline-flex items-center gap-2 rounded-lg bg-sunset-500 px-5 py-3 text-base font-semibold text-white shadow-lg shadow-sunset-500/30 hover:bg-sunset-600">Get Directions</a>
+          <a href="#itinerary" data-i18n="hero.buildChecklist" class="inline-flex items-center gap-2 rounded-lg bg-white/10 px-5 py-3 text-base font-semibold text-cream ring-1 ring-white/25 backdrop-blur hover:bg-white/20">Build Your Trip Checklist</a>
         </div>
       </div>
       <div class="mt-14 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
         <div class="rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur">
           <div class="text-2xl font-bold text-cream">4.3 ★</div>
-          <div class="mt-1 text-xs text-cream/80">Google rating</div>
+          <div data-i18n="hero.stats.googleRating" class="mt-1 text-xs text-cream/80">Google rating</div>
         </div>
         <div class="rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur">
           <div class="text-2xl font-bold text-cream">13.5 ha</div>
-          <div class="mt-1 text-xs text-cream/80">of rolling park</div>
+          <div data-i18n="hero.stats.rollingPark" class="mt-1 text-xs text-cream/80">of rolling park</div>
         </div>
         <div class="rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur">
           <div class="text-2xl font-bold text-cream">≈640 m</div>
-          <div class="mt-1 text-xs text-cream/80">above sea level</div>
+          <div data-i18n="hero.stats.aboveSeaLevel" class="mt-1 text-xs text-cream/80">above sea level</div>
         </div>
         <div class="rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur">
           <div class="text-2xl font-bold text-cream">1.5–2 hr</div>
-          <div class="mt-1 text-xs text-cream/80">from Manila (light traffic)</div>
+          <div data-i18n="hero.stats.fromManila" class="mt-1 text-xs text-cream/80">from Manila (light traffic)</div>
         </div>
       </div>
     </div>
@@ -72,63 +98,21 @@ import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
   <section id="overview" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <div class="grid gap-10 lg:grid-cols-3">
       <div class="lg:col-span-2">
-        <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">About the Grove</h2>
-        <p class="mt-4 text-lg leading-relaxed text-muted">Tagaytay Picnic Grove is the city's classic family and barkada destination on the ridge facing Taal Volcano. Come for the cool air, the unobstructed view of the lake and crater, and the simple pleasure of a long Filipino-style picnic with grilled inihaw, cold drinks, and a view you can't get anywhere else near Manila.</p>
-        <p class="mt-3 text-lg leading-relaxed text-muted">The park is a short walk or drive from People's Park in the Sky and is usually the first stop visitors make when heading up the ridge. You can do it in a few hours or linger all afternoon — or turn it into a full Tagaytay day with lunch at Mahogany Market and a sunset stroll.</p>
-        <div class="mt-10 grid gap-4 sm:grid-cols-2">
-          <div class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-            <div class="text-3xl">🌋</div>
-            <h3 class="mt-3 font-semibold text-forest-800">Taal Volcano view</h3>
-            <p class="mt-2 text-sm text-muted">The park's west-facing terraces line the caldera rim — bring a camera and stay for the golden-hour light on the volcano island and crater lake.</p>
-          </div>
-          <div class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-            <div class="text-3xl">🌲</div>
-            <h3 class="mt-3 font-semibold text-forest-800">Cool Tagaytay air</h3>
-            <p class="mt-2 text-sm text-muted">3–5 °C cooler than Manila at any given hour — especially pleasant December–February, with a real wind off the caldera after 4 PM.</p>
-          </div>
-          <div class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-            <div class="text-3xl">🍢</div>
-            <h3 class="mt-3 font-semibold text-forest-800">Picnic &amp; BBQ culture</h3>
-            <p class="mt-2 text-sm text-muted">Rows of nipa-hut cottages with tables, grill areas, and vendors selling charcoal and drinks — bring your own inihaw and make it an event.</p>
-          </div>
-          <div class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-            <div class="text-3xl">👨‍👩‍👧</div>
-            <h3 class="mt-3 font-semibold text-forest-800">Family &amp; kid friendly</h3>
-            <p class="mt-2 text-sm text-muted">Playground, pony rides, short horseback trails, gentle cable car, and an easy eco-trail loop — works for every age.</p>
-          </div>
-        </div>
+        <h2 data-i18n="overview.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">About the Grove</h2>
+        <p data-i18n="overview.p1" class="mt-4 text-lg leading-relaxed text-muted">{ui.overview.p1}</p>
+        <p data-i18n="overview.p2" class="mt-3 text-lg leading-relaxed text-muted">{ui.overview.p2}</p>
+        <div id="feature-cards" class="mt-10 grid gap-4 sm:grid-cols-2"></div>
         <div class="mt-10">
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 rounded-xl bg-forest-700 px-6 py-3 font-semibold text-white shadow hover:bg-forest-800">Open in Google Maps →</a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="overview.openInMaps" class="inline-flex items-center gap-2 rounded-xl bg-forest-700 px-6 py-3 font-semibold text-white shadow hover:bg-forest-800">Open in Google Maps →</a>
         </div>
       </div>
       <aside class="space-y-4">
         <div class="rounded-2xl bg-forest-50 p-6 ring-1 ring-forest-100">
-          <h3 class="font-semibold text-forest-800">Quick Info</h3>
-          <dl class="mt-4 space-y-4 text-sm">
-            <div>
-              <dt class="text-muted">Address</dt>
-              <dd class="mt-0.5 font-medium text-charcoal">{attraction.address.streetAddress}, {attraction.address.addressLocality}, {attraction.address.addressRegion} {attraction.address.postalCode}</dd>
-            </div>
-            <div>
-              <dt class="text-muted">Hours</dt>
-              <dd class="mt-0.5 font-medium text-charcoal">{attraction.openingHours.weekday} · {attraction.openingHours.opens}–{attraction.openingHours.closes}</dd>
-            </div>
-            <div>
-              <dt class="text-muted">Entrance</dt>
-              <dd class="mt-0.5 font-medium text-charcoal">{feesAndTickets.entrance.label}: {feesAndTickets.entrance.range}</dd>
-            </div>
-            <div>
-              <dt class="text-muted">Coordinates</dt>
-              <dd class="mt-0.5 font-medium text-charcoal">{attraction.lat}, {attraction.lng}</dd>
-            </div>
-            <div>
-              <dt class="text-muted">Operator</dt>
-              <dd class="mt-0.5 font-medium text-charcoal">Tagaytay City Government · Tagaytay City Tourism</dd>
-            </div>
-          </dl>
+          <h3 data-i18n="overview.quickInfo.title" class="font-semibold text-forest-800">Quick Info</h3>
+          <dl id="quickinfo-list" class="mt-4 space-y-4 text-sm"></dl>
         </div>
         <div class="rounded-2xl bg-sunset-50 p-6 ring-1 ring-sunset-200">
-          <p class="text-sm text-sunset-900">Park hours, entrance fees, cottage availability and activities change without notice. Always double-check the latest posted prices and conditions on Google Maps reviews or the Tagaytay City Tourism socials before you travel.</p>
+          <p data-i18n="overview.disclaimer" class="text-sm text-sunset-900">{ui.overview.disclaimer}</p>
         </div>
       </aside>
     </div>
@@ -136,120 +120,57 @@ import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
 
   <section id="fees" class="bg-forest-50/60 py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Tickets, &amp; Activities</h2>
-      <p class="mt-3 max-w-3xl text-muted">{feesAndTickets.disclaimer}</p>
-      <div class="mt-8 grid gap-5 md:grid-cols-2">
-        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-          <h3 class="font-semibold text-forest-800">{feesAndTickets.entrance.label}</h3>
-          <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">{feesAndTickets.entrance.range}</div>
-          <p class="mt-3 text-sm text-muted">{feesAndTickets.entrance.note}</p>
-        </div>
-        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-          <h3 class="font-semibold text-forest-800">{feesAndTickets.cottages.label}</h3>
-          <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">{feesAndTickets.cottages.range}</div>
-          <p class="mt-3 text-sm text-muted">{feesAndTickets.cottages.note}</p>
-        </div>
-      </div>
+      <h2 data-i18n="fees.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Tickets, &amp; Activities</h2>
+      <p data-i18n="fees.disclaimer" class="mt-3 max-w-3xl text-muted">{ui.fees.disclaimer}</p>
+      <div id="fees-cards" class="mt-8 grid gap-5 md:grid-cols-2"></div>
       <div class="mt-10">
-        <h3 class="font-semibold text-forest-800">Activities</h3>
+        <h3 data-i18n="fees.activities.title" class="font-semibold text-forest-800">Activities</h3>
         <div class="mt-4 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-forest-100">
           <table class="w-full text-left text-sm">
             <thead class="bg-forest-700 text-cream">
               <tr>
-                <th class="px-5 py-3 font-semibold">Activity</th>
-                <th class="px-5 py-3 font-semibold">Reference Rate</th>
-                <th class="px-5 py-3 font-semibold">Notes</th>
+                <th data-i18n="fees.activities.activity" class="px-5 py-3 font-semibold">Activity</th>
+                <th data-i18n="fees.activities.referenceRate" class="px-5 py-3 font-semibold">Reference Rate</th>
+                <th data-i18n="fees.activities.notes" class="px-5 py-3 font-semibold">Notes</th>
               </tr>
             </thead>
-            <tbody>
-              {feesAndTickets.activities.map((a, i) => (
-                <tr class:list={["border-t", "border-forest-100", i % 2 ? "bg-forest-50/40" : ""]}>
-                  <td class="px-5 py-4 font-medium text-charcoal">{a.label}</td>
-                  <td class="px-5 py-4 font-semibold text-sunset-700">{a.range}</td>
-                  <td class="px-5 py-4 text-muted">{a.note}</td>
-                </tr>
-              ))}
-            </tbody>
+            <tbody id="activities-table"></tbody>
           </table>
         </div>
       </div>
-      <div class="mt-10 rounded-2xl bg-lake-50 p-6 ring-1 ring-lake-200">
-        <h3 class="font-semibold text-lake-900">{feesAndTickets.payment.label}</h3>
-        <ul class="mt-3 list-inside list-disc space-y-1.5 text-sm text-lake-900/90">
-          {feesAndTickets.payment.bullets.map((b) => <li>{b}</li>)}
-        </ul>
-      </div>
+      <div id="payment-tips" class="mt-10 rounded-2xl bg-lake-50 p-6 ring-1 ring-lake-200"></div>
     </div>
   </section>
 
   <section id="parking" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Parking Info</h2>
-    <p class="mt-3 max-w-3xl text-muted">{transport.parking.headline}</p>
-    <ul class="mt-8 grid gap-4 sm:grid-cols-2">
-      {transport.parking.bullets.map((b) => (
-        <li class="flex gap-3 rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-          <span class="mt-1 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-forest-100 text-sm font-bold text-forest-700">✓</span>
-          <span class="text-sm text-charcoal">{b}</span>
-        </li>
-      ))}
-    </ul>
+    <h2 data-i18n="parking.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Parking Info</h2>
+    <p id="parking-headline" class="mt-3 max-w-3xl text-muted"></p>
+    <ul id="parking-bullets" class="mt-8 grid gap-4 sm:grid-cols-2"></ul>
   </section>
 
   <section id="best-time" class="bg-cream py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Best Time to Visit</h2>
-      <p class="mt-3 max-w-3xl text-muted">{bestTime.headline}</p>
+      <h2 data-i18n="bestTime.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Best Time to Visit</h2>
+      <p id="besttime-headline" class="mt-3 max-w-3xl text-muted"></p>
       <div class="mt-10 grid gap-6 lg:grid-cols-3">
         <div class="space-y-4">
-          <h3 class="font-semibold text-forest-800">By Season</h3>
-          {bestTime.season.map((s) => (
-            <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-              <div class="flex items-baseline justify-between">
-              <h4 class="font-semibold text-charcoal">{s.period}</h4>
-              <span class="text-sm font-bold text-sunset-600">{s.rating}</span>
-              </div>
-              <ul class="mt-3 list-inside list-disc space-y-1 pl-1 text-sm text-muted">
-                {s.points.map((p) => <li>{p}</li>)}
-              </ul>
-            </article>
-          ))}
+          <h3 data-i18n="bestTime.bySeason" class="font-semibold text-forest-800">By Season</h3>
+          <div id="besttime-season" class="space-y-4"></div>
         </div>
         <div class="space-y-4">
-          <h3 class="font-semibold text-forest-800">By Day</h3>
-          {bestTime.weekday.map((d) => (
-            <article class="flex items-start gap-4 rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-              <div class="flex-1">
-              <h4 class="font-semibold text-charcoal">{d.day}</h4>
-              <p class="mt-1 text-sm text-muted">{d.point}</p>
-              </div>
-              <span class="text-xs font-bold text-sunset-600">{d.rating}</span>
-            </article>
-          ))}
+          <h3 data-i18n="bestTime.byDay" class="font-semibold text-forest-800">By Day</h3>
+          <div id="besttime-weekday" class="space-y-4"></div>
           <div class="mt-6">
-            <h3 class="font-semibold text-forest-800">Suggested Stay</h3>
-            <div class="mt-3 rounded-2xl bg-forest-50 p-5 ring-1 ring-forest-100">
-              <ul class="list-inside list-disc space-y-1.5 text-sm text-muted">
-                {bestTime.stay.bullets.map((b) => <li>{b}</li>)}
-              </ul>
-            </div>
+            <h3 data-i18n="bestTime.suggestedStay" class="font-semibold text-forest-800">Suggested Stay</h3>
+            <div id="besttime-stay" class="mt-3 rounded-2xl bg-forest-50 p-5 ring-1 ring-forest-100"></div>
           </div>
         </div>
         <div class="space-y-4">
-          <h3 class="font-semibold text-forest-800">By Hour</h3>
-          {bestTime.hourly.map((h) => (
-            <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-              <div class="flex items-baseline justify-between">
-                <h4 class="font-semibold text-charcoal">{h.window}</h4>
-                <span class="text-sm font-bold text-sunset-600">{h.rating}</span>
-              </div>
-              <p class="mt-2 text-sm text-muted">{h.point}</p>
-            </article>
-          ))}
+          <h3 data-i18n="bestTime.byHour" class="font-semibold text-forest-800">By Hour</h3>
+          <div id="besttime-hourly" class="space-y-4"></div>
           <div class="mt-6 rounded-2xl border border-sunset-300 bg-sunset-50 p-5 ring-1 ring-sunset-200">
-            <h4 class="font-semibold text-sunset-900">Periods to Avoid</h4>
-            <ul class="mt-3 list-inside list-disc space-y-1.5 text-sm text-sunset-900/90">
-              {bestTime.avoid.map((x) => <li>{x}</li>)}
-            </ul>
+            <h4 data-i18n="bestTime.periodsToAvoid" class="font-semibold text-sunset-900">Periods to Avoid</h4>
+            <ul id="besttime-avoid" class="mt-3 list-inside list-disc space-y-1.5 text-sm text-sunset-900/90"></ul>
           </div>
         </div>
       </div>
@@ -258,135 +179,56 @@ import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
 
   <section id="transport" class="bg-forest-50/60 py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Getting There</h2>
-      <p class="mt-3 max-w-3xl text-muted">Driving, bus + jeepney commute, ride-hailing, and airports — all the common ways to reach Picnic Grove from Metro Manila.</p>
-      <div class="mt-10 grid gap-5 lg:grid-cols-2">
-        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">{transport.driving.icon}</span>
-            <h3 class="font-semibold text-forest-800">{transport.driving.title}</h3>
-          </div>
-          <ul class="mt-4 list-inside list-disc space-y-2 text-sm text-muted">
-            {transport.driving.body.map((b) => <li>{b}</li>)}
-          </ul>
-        </article>
-        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">{transport.commute.icon}</span>
-            <h3 class="font-semibold text-forest-800">{transport.commute.title}</h3>
-          </div>
-          <ul class="mt-4 list-inside list-disc space-y-2 text-sm text-muted">
-            {transport.commute.body.map((b) => <li>{b}</li>)}
-          </ul>
-        </article>
-        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">{transport.taxiRidehail.icon}</span>
-            <h3 class="font-semibold text-forest-800">{transport.taxiRidehail.title}</h3>
-          </div>
-          <ul class="mt-4 list-inside list-disc space-y-2 text-sm text-muted">
-            {transport.taxiRidehail.body.map((b) => <li>{b}</li>)}
-          </ul>
-        </article>
-        <article class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-          <div class="flex items-center gap-3">
-            <span class="text-2xl">✈️</span>
-            <h3 class="font-semibold text-forest-800">From the Airports</h3>
-          </div>
-          <div class="mt-4 space-y-5">
-            {transport.fromAirport.map((a) => (
-              <div>
-                <h4 class="flex items-center gap-2 font-medium text-charcoal">{a.icon} {a.title}</h4>
-                <ul class="mt-2 list-inside list-disc space-y-1.5 pl-4 text-sm text-muted">
-                  {a.body.map((b) => <li>{b}</li>)}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </article>
-      </div>
+      <h2 data-i18n="transport.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Getting There</h2>
+      <p data-i18n="transport.subtitle" class="mt-3 max-w-3xl text-muted">Driving, bus + jeepney commute, ride-hailing, and airports — all the common ways to reach Picnic Grove from Metro Manila.</p>
+      <div id="transport-cards" class="mt-10 grid gap-5 lg:grid-cols-2"></div>
       <div class="mt-12">
-        <h3 class="font-semibold text-forest-800">On the map</h3>
+        <h3 data-i18n="transport.onTheMap" class="font-semibold text-forest-800">On the map</h3>
         <div class="mt-4 overflow-hidden rounded-2xl shadow-sm ring-1 ring-forest-100">
           <div class="aspect-video w-full">
             <iframe src={mapsEmbedSrc} title="Tagaytay Picnic Grove — Google Map" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
           </div>
         </div>
         <div class="mt-3">
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-forest-700 hover:text-forest-800">Open larger map in Google Maps →</a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="transport.openLargerMap" class="inline-flex items-center gap-2 text-sm font-semibold text-forest-700 hover:text-forest-800">Open larger map in Google Maps →</a>
         </div>
       </div>
     </div>
   </section>
 
   <section id="food" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Places to Eat Nearby</h2>
-    <p class="mt-3 max-w-3xl text-muted">Tagaytay's food strip starts a short drive east along the ridge. Bulalo, classic Filipino, and a handful of destination restaurants.</p>
-    <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {nearbyFood.map((f) => (
-        <article class="flex flex-col rounded-2xl border border-forest-100 bg-white p-6 shadow-sm">
-          <div class="flex items-start justify-between gap-2">
-            <h3 class="font-semibold text-forest-800">{f.name}</h3>
-            <span class="flex-none rounded-full bg-forest-100 px-2.5 py-0.5 text-sm font-bold text-forest-700">{f.budget}</span>
-          </div>
-          <p class="mt-1 text-sm text-muted">{f.type}</p>
-          <dl class="mt-4 space-y-2 text-sm">
-            <div class="flex gap-2">
-              <dt class="w-20 flex-none text-muted">Distance</dt>
-              <dd class="text-charcoal">{f.distanceKm} · {f.direction}</dd>
-            </div>
-          </dl>
-          <p class="mt-4 flex-1 text-sm text-muted">{f.reason}</p>
-          <a class="mt-5 inline-flex w-full items-center justify-center rounded-lg bg-forest-100 px-4 py-2 text-sm font-semibold text-forest-700 hover:bg-forest-200" href={`https://www.google.com/maps/search/?api=1&query=${f.mapsQuery}`} target="_blank" rel="noopener noreferrer">Open in Maps</a>
-        </article>
-      ))}
-    </div>
+    <h2 data-i18n="food.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Places to Eat Nearby</h2>
+    <p data-i18n="food.subtitle" class="mt-3 max-w-3xl text-muted">Tagaytay's food strip starts a short drive east along the ridge. Bulalo, classic Filipino, and a handful of destination restaurants.</p>
+    <div id="food-cards" class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
   </section>
 
   <section id="nearby" class="bg-sunset-50/40 py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Other Things to Do Nearby</h2>
-      <p class="mt-3 max-w-3xl text-muted">Pair Picnic Grove with one of these for a full day on the ridge.</p>
-      <div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {nearbySpots.map((n) => (
-          <article class="flex flex-col rounded-2xl border border-sunset-200 bg-white p-6 shadow-sm">
-            <h3 class="font-semibold text-forest-800">{n.name}</h3>
-            <p class="mt-1 text-sm text-muted">{n.type}</p>
-            <dl class="mt-4 space-y-1 text-sm">
-              <div class="flex gap-2">
-                <dt class="w-20 flex-none text-muted">Distance</dt>
-                <dd class="text-charcoal">{n.distanceKm}</dd>
-              </div>
-              <div class="flex gap-2">
-                <dt class="w-20 flex-none text-muted">Drive</dt>
-                <dd class="text-charcoal">{n.driveMinutes}</dd>
-              </div>
-            </dl>
-            <p class="mt-4 flex-1 text-sm text-muted">{n.summary}</p>
-            <a class="mt-5 inline-flex w-full items-center justify-center rounded-lg bg-sunset-500 px-4 py-2 text-sm font-semibold text-white hover:bg-sunset-600" href={`https://www.google.com/maps/search/?api=1&query=${n.mapsQuery}`} target="_blank" rel="noopener noreferrer">Get directions</a>
-          </article>
-        ))}
-      </div>
+      <h2 data-i18n="nearby.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Other Things to Do Nearby</h2>
+      <p data-i18n="nearby.subtitle" class="mt-3 max-w-3xl text-muted">Pair Picnic Grove with one of these for a full day on the ridge.</p>
+      <div id="nearby-cards" class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
     </div>
   </section>
 
   <section id="gallery" class="bg-forest-950 py-16 text-cream">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 class="font-serif text-3xl font-bold sm:text-4xl">Photo Gallery</h2>
-      <p class="mt-3 max-w-3xl text-cream/80">Tap any photo to open it full-size.</p>
-      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+      <h2 data-i18n="gallery.title" class="font-serif text-3xl font-bold sm:text-4xl">Photo Gallery</h2>
+      <p data-i18n="gallery.subtitle" class="mt-3 max-w-3xl text-cream/80">Tap any photo to open it full-size.</p>
+      <div class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" id="gallery-grid">
         {gallery.map((g, i) => (
-          <button class={`group relative overflow-hidden rounded-xl ring-1 ring-white/10 ${i === 0 ? "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" : ""}`} data-gallery-index={i} data-caption={g.caption} aria-label={`Open photo: ${g.alt}`}>
-            <img src={g.src} alt={g.alt} loading="lazy" class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" />
-            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-950/70 via-transparent opacity-0 transition group-hover:opacity-100"></div>
+          <button class={`group relative overflow-hidden rounded-xl ring-1 ring-white/10 ${i === 0 ? "col-span-2 row-span-2 sm:col-span-2 sm:row-span-2" : ""}`} data-gallery-index={i} aria-label={`Open photo: ${g.alt}`}>
+            <img src={g.src} alt={g.alt} loading="lazy" data-gallery-img={i} class="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]" />
+            <figcaption class="pointer-events-none absolute inset-0 bg-gradient-to-t from-forest-950/70 via-transparent opacity-0 transition group-hover:opacity-100 flex items-end p-3" data-gallery-caption={i}>
+              <span class="text-sm text-cream/90" set:html={g.caption}></span>
+            </figcaption>
           </button>
         ))}
       </div>
     </div>
     <div id="gallery-lightbox" class="fixed inset-0 z-50 hidden lightbox-backdrop bg-forest-950/90">
-      <button id="lb-close" class="absolute right-4 top-4 z-10 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-cream ring-1 ring-white/20 hover:bg-white/20">Close ✕</button>
-      <button id="lb-prev" class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-cream ring-1 ring-white/20 hover:bg-white/20 sm:left-6" aria-label="Previous">‹</button>
-      <button id="lb-next" class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-cream ring-1 ring-white/20 hover:bg-white/20 sm:right-6" aria-label="Next">›</button>
+      <button id="lb-close" data-i18n="gallery.close" class="absolute right-4 top-4 z-10 rounded-full bg-white/10 px-4 py-2 text-sm font-semibold text-cream ring-1 ring-white/20 hover:bg-white/20">Close ✕</button>
+      <button id="lb-prev" data-i18n="gallery.previous" aria-label="Previous" class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-cream ring-1 ring-white/20 hover:bg-white/20 sm:left-6">‹</button>
+      <button id="lb-next" data-i18n="gallery.next" aria-label="Next" class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/10 p-3 text-cream ring-1 ring-white/20 hover:bg-white/20 sm:right-6">›</button>
       <figure class="flex h-full max-h-screen w-full items-center justify-center px-4 py-16 sm:px-20">
         <div class="flex max-h-full max-w-6xl flex-col items-center">
           <img id="lb-img" src="" alt="" class="max-h-[75vh] w-auto max-w-full rounded-xl shadow-2xl shadow-black/50" />
@@ -397,109 +239,89 @@ import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
   </section>
 
   <section id="itinerary" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-    <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Trip Checklist</h2>
-    <p class="mt-3 max-w-3xl text-muted">Tick off what you want to do. Saves automatically to this device only — nothing is uploaded.</p>
+    <h2 data-i18n="itinerary.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Trip Checklist</h2>
+    <p data-i18n="itinerary.subtitle" class="mt-3 max-w-3xl text-muted">Tick off what you want to do. Saves automatically to this device only — nothing is uploaded.</p>
     <div class="mt-6 flex flex-wrap items-center gap-4">
-      <div class="rounded-full bg-forest-100 px-4 py-1.5 text-sm font-semibold text-forest-800"><span id="itin-count">0</span> saved</div>
-      <button id="itin-clear" class="text-sm font-semibold text-muted underline hover:text-charcoal">Clear all</button>
+      <div class="rounded-full bg-forest-100 px-4 py-1.5 text-sm font-semibold text-forest-800"><span id="itin-count">0</span> <span data-i18n="itinerary.saved">saved</span></div>
+      <button id="itin-clear" data-i18n="itinerary.clearAll" class="text-sm font-semibold text-muted underline hover:text-charcoal">Clear all</button>
     </div>
-    <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {itineraryPool.map((it) => (
-        <label class="group flex cursor-pointer gap-3 rounded-2xl border border-forest-100 bg-white p-5 shadow-sm hover:border-forest-200" data-itin-id={it.id}>
-          <input type="checkbox" class="mt-1 h-5 w-5 flex-none accent-forest-700" data-itin-check={it.id} />
-          <div class="flex-1">
-            <div class="flex items-center gap-2">
-              <span class={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ring-1
-              ${it.category === 'View' ? 'bg-lake-100 text-lake-800 ring-lake-200' : ''}
-              ${it.category === 'Activity' ? 'bg-forest-100 text-forest-800 ring-forest-200' : ''}
-              ${it.category === 'Food' ? 'bg-sunset-100 text-sunset-800 ring-sunset-200' : ''}
-              ${it.category === 'Nearby' ? 'bg-lake-50 text-lake-900 ring-lake-300' : ''}
-            `}>{it.category}</span>
-            {it.duration ? <span class="text-xs text-muted">{it.duration}</span> : ''}
-            </div>
-            <div class="mt-1 font-semibold text-charcoal">{it.title}</div>
-            <p class="mt-1 text-sm text-muted">{it.description}</p>
-            {it.maps ? <a class="mt-2 inline-block text-xs font-semibold text-forest-700 hover:text-forest-800 underline" href={it.maps} target="_blank" rel="noopener noreferrer">Open in Maps →</a> : ''}
-          </div>
-        </label>
-      ))}
-    </div>
+    <div id="itinerary-grid" class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
   </section>
 
   <section id="souvenir" class="bg-forest-50/60 py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="flex flex-col gap-3">
         <div>
-          <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Souvenir Card Creator</h2>
-          <p class="mt-3 max-w-3xl text-muted">Make a keepsake from your visit. Upload a photo, pick a size and a style — your browser renders it locally and never uploads anything.</p>
-          <p class="mt-2 inline-flex items-center gap-2 rounded-full bg-forest-100 px-3 py-1 text-xs font-semibold text-forest-800 ring-1 ring-forest-200">🔒 Your photo stays on your device only.</p>
+          <h2 data-i18n="souvenir.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Souvenir Card Creator</h2>
+          <p data-i18n="souvenir.subtitle" class="mt-3 max-w-3xl text-muted">Make a keepsake from your visit. Upload a photo, pick a size and a style — your browser renders it locally and never uploads anything.</p>
+          <p data-i18n="souvenir.privacyBadge" class="mt-2 inline-flex items-center gap-2 rounded-full bg-forest-100 px-3 py-1 text-xs font-semibold text-forest-800 ring-1 ring-forest-200">🔒 Your photo stays on your device only.</p>
         </div>
       </div>
       <div class="mt-10 grid gap-8 lg:grid-cols-5">
         <div class="space-y-6 lg:col-span-2">
           <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-forest-100">
-            <h3 class="font-semibold text-forest-800">1. Photo</h3>
+            <h3 data-i18n="souvenir.steps.photo" class="font-semibold text-forest-800">1. Photo</h3>
             <div class="mt-4 flex flex-wrap gap-2">
               <label class="inline-flex cursor-pointer items-center justify-center rounded-lg bg-forest-700 px-4 py-2 text-sm font-semibold text-cream hover:bg-forest-800">
-                📷 Upload
+                <span data-i18n="souvenir.steps.upload">📷 Upload</span>
                 <input id="sc-upload" type="file" accept="image/*" class="hidden" />
               </label>
-              <button id="sc-camera" class="inline-flex items-center justify-center rounded-lg bg-forest-100 px-4 py-2 text-sm font-semibold text-forest-800 hover:bg-forest-200">📸 Camera</button>
-              <button id="sc-reset" class="inline-flex items-center justify-center rounded-lg bg-muted/20 px-4 py-2 text-sm font-semibold text-muted hover:bg-muted/30">Reset</button>
+              <button id="sc-camera" data-i18n="souvenir.steps.camera" class="inline-flex items-center justify-center rounded-lg bg-forest-100 px-4 py-2 text-sm font-semibold text-forest-800 hover:bg-forest-200">📸 Camera</button>
+              <button id="sc-reset" data-i18n="souvenir.steps.reset" class="inline-flex items-center justify-center rounded-lg bg-muted/20 px-4 py-2 text-sm font-semibold text-muted hover:bg-muted/30">Reset</button>
             </div>
           </div>
           <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-forest-100">
-            <h3 class="font-semibold text-forest-800">2. Size</h3>
+            <h3 data-i18n="souvenir.steps.size" class="font-semibold text-forest-800">2. Size</h3>
             <div class="mt-4 grid grid-cols-3 gap-2">
               <label class="cursor-pointer">
                 <input type="radio" name="sc-ratio" value="1:1" class="peer hidden" checked>
-                <div class="rounded-xl border border-forest-100 bg-white p-3 text-center text-sm font-medium text-charcoal peer-checked:border-sunset-500 peer-checked:bg-sunset-50 peer-checked:text-sunset-800">1:1<br><span class="text-xs text-muted">Square (500×500)</span></div>
+                <div data-i18n-html="souvenir.steps.square" class="rounded-xl border border-forest-100 bg-white p-3 text-center text-sm font-medium text-charcoal peer-checked:border-sunset-500 peer-checked:bg-sunset-50 peer-checked:text-sunset-800">1:1<br><span class="text-xs text-muted">Square (500×500)</span></div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="sc-ratio" value="3:4" class="peer hidden">
-                <div class="rounded-xl border border-forest-100 bg-white p-3 text-center text-sm font-medium text-charcoal peer-checked:border-sunset-500 peer-checked:bg-sunset-50 peer-checked:text-sunset-800">3:4<br><span class="text-xs text-muted">Postcard</span></div>
+                <div data-i18n-html="souvenir.steps.postcard" class="rounded-xl border border-forest-100 bg-white p-3 text-center text-sm font-medium text-charcoal peer-checked:border-sunset-500 peer-checked:bg-sunset-50 peer-checked:text-sunset-800">3:4<br><span class="text-xs text-muted">Postcard</span></div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="sc-ratio" value="9:16" class="peer hidden">
-                <div class="rounded-xl border border-forest-100 bg-white p-3 text-center text-sm font-medium text-charcoal peer-checked:border-sunset-500 peer-checked:bg-sunset-50 peer-checked:text-sunset-800">9:16<br><span class="text-xs text-muted">Story</span></div>
+                <div data-i18n-html="souvenir.steps.story" class="rounded-xl border border-forest-100 bg-white p-3 text-center text-sm font-medium text-charcoal peer-checked:border-sunset-500 peer-checked:bg-sunset-50 peer-checked:text-sunset-800">9:16<br><span class="text-xs text-muted">Story</span></div>
               </label>
             </div>
           </div>
           <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-forest-100">
-            <h3 class="font-semibold text-forest-800">3. Style</h3>
+            <h3 data-i18n="souvenir.steps.style" class="font-semibold text-forest-800">3. Style</h3>
             <div class="mt-4 grid grid-cols-2 gap-2">
               <label class="cursor-pointer">
                 <input type="radio" name="sc-style" value="ridge" class="peer hidden" checked>
-                <div class="rounded-xl border border-forest-100 bg-gradient-to-br from-forest-600 to-forest-800 p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-sunset-500">Ridge Green</div>
+                <div data-i18n="souvenir.steps.ridgeGreen" class="rounded-xl border border-forest-100 bg-gradient-to-br from-forest-600 to-forest-800 p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-sunset-500">Ridge Green</div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="sc-style" value="sunset" class="peer hidden">
-                <div class="rounded-xl border border-forest-100 bg-gradient-to-br from-sunset-500 to-sunset-800 p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-sunset-300">Sunset Gold</div>
+                <div data-i18n="souvenir.steps.sunsetGold" class="rounded-xl border border-forest-100 bg-gradient-to-br from-sunset-500 to-sunset-800 p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-sunset-300">Sunset Gold</div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="sc-style" value="lake" class="peer hidden">
-                <div class="rounded-xl border border-forest-100 bg-gradient-to-br from-lake-500 to-lake-900 p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-lake-200">Lake Blue</div>
+                <div data-i18n="souvenir.steps.lakeBlue" class="rounded-xl border border-forest-100 bg-gradient-to-br from-lake-500 to-lake-900 p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-lake-200">Lake Blue</div>
               </label>
               <label class="cursor-pointer">
                 <input type="radio" name="sc-style" value="noir" class="peer hidden">
-                <div class="rounded-xl border border-forest-100 bg-gradient-to-br from-charcoal to-black p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-muted">Film Noir</div>
+                <div data-i18n="souvenir.steps.filmNoir" class="rounded-xl border border-forest-100 bg-gradient-to-br from-charcoal to-black p-3 text-center text-sm font-medium text-cream peer-checked:ring-2 peer-checked:ring-muted">Film Noir</div>
               </label>
             </div>
           </div>
           <div class="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-forest-100">
-            <h3 class="font-semibold text-forest-800">4. Text</h3>
+            <h3 data-i18n="souvenir.steps.text" class="font-semibold text-forest-800">4. Text</h3>
             <div class="mt-4 space-y-3">
               <div>
-                <label class="text-xs font-semibold text-muted">Title</label>
+                <label data-i18n="souvenir.steps.titleLabel" class="text-xs font-semibold text-muted">Title</label>
                 <input id="sc-title" type="text" value="Tagaytay Picnic Grove" class="mt-1 w-full rounded-lg border border-forest-200 bg-white px-3 py-2 text-sm focus:border-forest-500 focus:outline-none focus:ring-2 focus:ring-forest-200" />
               </div>
               <div>
-                <label class="text-xs font-semibold text-muted">Subtitle / date</label>
+                <label data-i18n="souvenir.steps.subtitleLabel" class="text-xs font-semibold text-muted">Subtitle / date</label>
                 <input id="sc-subtitle" type="text" class="mt-1 w-full rounded-lg border border-forest-200 bg-white px-3 py-2 text-sm focus:border-forest-500 focus:outline-none focus:ring-2 focus:ring-forest-200" />
               </div>
             </div>
           </div>
-          <button id="sc-download" class="w-full rounded-xl bg-sunset-500 px-5 py-3 font-semibold text-white shadow hover:bg-sunset-600">⬇ Download PNG</button>
+          <button id="sc-download" data-i18n="souvenir.download" class="w-full rounded-xl bg-sunset-500 px-5 py-3 font-semibold text-white shadow hover:bg-sunset-600">⬇ Download PNG</button>
         </div>
         <div class="lg:col-span-3">
           <div class="sticky top-24">
@@ -513,19 +335,9 @@ import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
   </section>
 
   <section id="faq" class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-    <h2 class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">FAQ</h2>
-    <p class="mt-3 text-muted">Common questions answered by other visitors.</p>
-    <div class="mt-10 space-y-3">
-      {faqJsonLd.mainEntity.map((f) => (
-        <details class="group rounded-2xl border border-forest-100 bg-white p-5 shadow-sm open:border-sunset-200 open:bg-sunset-50/40">
-          <summary class="flex items-start justify-between gap-4">
-            <span class="font-semibold text-charcoal">{f.name}</span>
-            <span class="flex-none flex h-7 w-7 items-center justify-center rounded-full bg-forest-100 text-lg font-bold text-forest-700 transition group-open:rotate-45 group-open:bg-sunset-100 group-open:text-sunset-700">+</span>
-          </summary>
-          <p class="mt-3 text-sm leading-relaxed text-muted">{f.acceptedAnswer.text}</p>
-        </details>
-      ))}
-    </div>
+    <h2 data-i18n="faq.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">FAQ</h2>
+    <p data-i18n="faq.subtitle" class="mt-3 text-muted">Common questions answered by other visitors.</p>
+    <div id="faq-items" class="mt-10 space-y-3"></div>
   </section>
 
   <footer class="border-t border-forest-100 bg-forest-900 py-14 text-cream">
@@ -534,48 +346,48 @@ import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
         <div class="flex items-center gap-3">
           <img src="/logo.svg" alt="" width="44" height="44" class="h-11 w-11" />
           <div>
-            <div class="font-serif text-xl font-bold">Tagaytay Picnic Grove</div>
-            <div class="mt-0.5 text-xs text-cream/70">Unofficial visitor guide</div>
+            <div data-i18n="footer.tagline" class="font-serif text-xl font-bold">Tagaytay Picnic Grove</div>
+            <div data-i18n="footer.unofficialGuide" class="mt-0.5 text-xs text-cream/70">Unofficial visitor guide</div>
           </div>
         </div>
         <div class="flex flex-wrap gap-3 text-sm">
-          <a href="#top" class="rounded-lg bg-white/10 px-4 py-2 font-semibold ring-1 ring-white/20 hover:bg-white/20">Back to top ↑</a>
-          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="rounded-lg bg-sunset-500 px-4 py-2 font-semibold hover:bg-sunset-600">Open Google Maps</a>
+          <a href="#top" data-i18n="footer.backToTop" class="rounded-lg bg-white/10 px-4 py-2 font-semibold ring-1 ring-white/20 hover:bg-white/20">Back to top ↑</a>
+          <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="footer.openGoogleMaps" class="rounded-lg bg-sunset-500 px-4 py-2 font-semibold hover:bg-sunset-600">Open Google Maps</a>
         </div>
       </div>
       <div class="mt-12 grid gap-8 text-sm sm:grid-cols-3">
         <div>
-          <h4 class="font-semibold">Plan your trip</h4>
+          <h4 data-i18n="footer.sections.planTrip" class="font-semibold">Plan your trip</h4>
           <ul class="mt-3 space-y-2 text-cream/80">
-            <li><a href="#fees" class="hover:text-cream">Tickets &amp; fees</a></li>
-            <li><a href="#parking" class="hover:text-cream">Parking</a></li>
-            <li><a href="#transport" class="hover:text-cream">Getting there</a></li>
-            <li><a href="#best-time" class="hover:text-cream">Best time</a></li>
+            <li><a href="#fees" data-i18n="footer.sections.ticketsFees" class="hover:text-cream">Tickets &amp; fees</a></li>
+            <li><a href="#parking" class="hover:text-cream" data-i18n="nav.parking">Parking</a></li>
+            <li><a href="#transport" class="hover:text-cream" data-i18n="nav.transport">Getting there</a></li>
+            <li><a href="#best-time" class="hover:text-cream" data-i18n="nav.bestTime">Best time</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold">Explore</h4>
+          <h4 data-i18n="footer.sections.explore" class="font-semibold">Explore</h4>
           <ul class="mt-3 space-y-2 text-cream/80">
-            <li><a href="#food" class="hover:text-cream">Nearby food</a></li>
-            <li><a href="#nearby" class="hover:text-cream">Nearby spots</a></li>
-            <li><a href="#gallery" class="hover:text-cream">Photo gallery</a></li>
-            <li><a href="#itinerary" class="hover:text-cream">Trip checklist</a></li>
+            <li><a href="#food" data-i18n="footer.sections.nearbyFood" class="hover:text-cream">Nearby food</a></li>
+            <li><a href="#nearby" data-i18n="footer.sections.nearbySpots" class="hover:text-cream">Nearby spots</a></li>
+            <li><a href="#gallery" data-i18n="footer.sections.photoGallery" class="hover:text-cream">Photo gallery</a></li>
+            <li><a href="#itinerary" data-i18n="footer.sections.tripChecklist" class="hover:text-cream">Trip checklist</a></li>
           </ul>
         </div>
         <div>
-          <h4 class="font-semibold">Contact the park</h4>
+          <h4 data-i18n="footer.sections.contactPark" class="font-semibold">Contact the park</h4>
           <ul class="mt-3 space-y-2 text-cream/80">
-            <li>Tagaytay City Tourism</li>
-            <li>City of Tagaytay, Cavite, PH</li>
-            <li><a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="underline">Google Maps listing ↗</a></li>
+            <li data-i18n="footer.sections.tagaytayTourism">Tagaytay City Tourism</li>
+            <li data-i18n="footer.sections.cityTagaytay">City of Tagaytay, Cavite, PH</li>
+            <li><a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="footer.sections.googleMapsListing" class="underline">Google Maps listing ↗</a></li>
           </ul>
         </div>
       </div>
       <div class="mt-12 rounded-2xl border border-white/10 bg-white/5 p-6 ring-1 ring-white/10">
-        <div class="font-semibold text-sunset-300">Non-official Disclaimer</div>
-        <p class="mt-2 text-sm text-cream/80">This is an independent, non-official visitor guide. It is not affiliated with, endorsed by, or connected to the Tagaytay City government, the Tagaytay City Tourism Office, the Philippine Department of Tourism (DoT), or any operating tenant at the park. Prices, hours, policies, availability, activity offerings, and opening status are for general reference only and change without notice — you must always verify the latest information directly with official sources before your visit.</p>
+        <div data-i18n="footer.disclaimerTitle" class="font-semibold text-sunset-300">Non-official Disclaimer</div>
+        <p data-i18n="footer.disclaimerBody" class="mt-2 text-sm text-cream/80">{ui.footer.disclaimerBody}</p>
       </div>
-      <div class="mt-10 border-t border-white/10 pt-6 text-xs text-cream/60">Made for planning purposes. No part of this page uploads your photos, checklist, or any device data.</div>
+      <div data-i18n="footer.madeFor" class="mt-10 border-t border-white/10 pt-6 text-xs text-cream/60">Made for planning purposes. No part of this page uploads your photos, checklist, or any device data.</div>
     </div>
   </footer>
 </BaseLayout>
@@ -585,28 +397,20 @@ import { attraction, mapsUrl, mapsEmbedSrc } from '../config';
   const KEY = 'tpg_itinerary_v1';
   const load = () => { try { return new Set(JSON.parse(localStorage.getItem(KEY) || '[]')); } catch { return new Set(); } };
   const save = (s) => { try { localStorage.setItem(KEY, JSON.stringify(Array.from(s))); } catch {} };
-  const apply = (set) => {
-    document.querySelectorAll('[data-itin-check]').forEach((cb) => { cb.checked = set.has(cb.getAttribute('data-itin-check')); });
-    document.getElementById('itin-count').textContent = String(set.size);
-  };
-  const set = load();
-  apply(set);
-  const updateCount = () => { document.getElementById('itin-count').textContent = String(set.size); };
-  document.addEventListener('change', (e) => {
-    const id = e.target.getAttribute && e.target.getAttribute('data-itin-check');
-    if (!id) return;
-    if (e.target.checked) set.add(id); else set.delete(id);
-    save(set); updateCount();
-  });
-  document.getElementById('itin-clear').addEventListener('click', () => {
-    set.clear(); save(set); apply(set);
-  });
+  window.__TPG_ITIN_LOAD__ = load;
+  window.__TPG_ITIN_SAVE__ = save;
 })();
 </script>
 
 <script is:inline set:html={`window.__TPG_HERO_URL__ = ${JSON.stringify(heroImage)};`}></script>
 
+<script is:inline set:html={`window.__TPG_MAPS_URL__ = ${JSON.stringify(mapsUrl)};`}></script>
+
+<script is:inline set:html={`window.__TPG_GALLERY_FILES__ = ${JSON.stringify(gallery.map(g => ({ id: g.id, src: g.src })))};`}></script>
+
 <script>
+  import '../scripts/i18n';
   import '../scripts/gallery-lightbox';
   import '../scripts/souvenir-card';
+  import '../scripts/render-i18n';
 </script>

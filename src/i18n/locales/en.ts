@@ -1,4 +1,4 @@
-import type { FullTranslations } from './schema';
+import type { FullTranslations } from '../schema';
 
 export const en: FullTranslations = {
   ui: {

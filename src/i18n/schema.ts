@@ -1,5 +1,3 @@
-import type { LanguageCode } from './types';
-
 export interface UITranslations {
   nav: {
     overview: string;

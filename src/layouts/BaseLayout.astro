@@ -12,7 +12,7 @@ export interface Props {
 const {
   title = siteConfig.title,
   description = siteConfig.description,
-  ogImage = '/gallery/taal-volcano-panorama.jpg',
+  ogImage = '/gallery/tagaytay-picnic-grove-14.jpg',
   faqJsonLd,
 } = Astro.props;
 
@@ -77,15 +77,15 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdGraph };
 ---
 
 <!doctype html>
-<html lang={siteConfig.lang}>
+<html lang="en" data-lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#305725" />
     <meta name="color-scheme" content="light" />
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title data-i18n="site.title">{title}</title>
+    <meta name="description" data-i18n-attr="content|site.description" content={description} />
 
     {siteConfig.url && <link rel="canonical" href={canonicalAbsolute} />}
 
@@ -93,16 +93,16 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdGraph };
     <link rel="apple-touch-icon" href="/favicon.svg" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content={siteConfig.locale} />
-    <meta property="og:site_name" content={siteConfig.name} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:locale" content="en_PH" data-i18n-attr="content|og.locale" />
+    <meta property="og:site_name" content={siteConfig.name} data-i18n-attr="content|site.name" />
+    <meta property="og:title" data-i18n-attr="content|site.title" content={title} />
+    <meta property="og:description" data-i18n-attr="content|site.description" content={description} />
     {siteConfig.url && <meta property="og:url" content={ogUrl} />}
     <meta property="og:image" content={ogImageAbsolute} />
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:title" data-i18n-attr="content|site.title" content={title} />
+    <meta name="twitter:description" data-i18n-attr="content|site.description" content={description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
