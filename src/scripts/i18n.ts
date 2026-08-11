@@ -64,15 +64,25 @@ export function getTranslation(lang: LanguageCode, key: string): string {
   const translations = window.__TRANSLATIONS__;
   if (!translations || !translations[lang]) return key;
   const parts = key.split('.');
-  let cur: any = translations[lang];
-  for (const p of parts) {
-    if (cur && typeof cur === 'object' && p in cur) {
-      cur = cur[p];
-    } else {
-      return key;
+  const tryPath = (obj: any): string | undefined => {
+    let cur: any = obj;
+    for (const p of parts) {
+      if (cur && typeof cur === 'object' && p in cur) {
+        cur = cur[p];
+      } else {
+        return undefined;
+      }
     }
-  }
-  return typeof cur === 'string' ? cur : key;
+    return typeof cur === 'string' ? cur : undefined;
+  };
+  const root = translations[lang];
+  const v1 = tryPath(root);
+  if (typeof v1 === 'string') return v1;
+  const v2 = tryPath(root.ui);
+  if (typeof v2 === 'string') return v2;
+  const v3 = tryPath(root.data);
+  if (typeof v3 === 'string') return v3;
+  return key;
 }
 
 export function applyLanguage(lang: LanguageCode) {
