@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Tagaytay Picnic Grove Logo">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbefff"/>
+      <stop offset="100%" stop-color="#fdf6ee"/>
+    </linearGradient>
+    <linearGradient id="ridge" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4d8c3a"/>
+      <stop offset="100%" stop-color="#243b1d"/>
+    </linearGradient>
+    <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#60b8ff"/>
+      <stop offset="100%" stop-color="#2577ec"/>
+    </linearGradient>
+    <linearGradient id="volcano" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#305725"/>
+      <stop offset="100%" stop-color="#0f200b"/>
+    </linearGradient>
+    <linearGradient id="sun" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2cea6"/>
+      <stop offset="100%" stop-color="#d66823"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="48" fill="url(#sky)"/>
+  <circle cx="190" cy="74" r="28" fill="url(#sun)" opacity="0.9"/>
+  <path d="M0 180 Q50 140 100 160 Q140 175 170 150 Q210 120 256 160 L256 256 L0 256 Z" fill="url(#ridge)"/>
+  <ellipse cx="128" cy="186" rx="70" ry="18" fill="url(#lake)"/>
+  <path d="M118 182 Q128 160 140 182 L136 188 L122 188 Z" fill="url(#volcano)"/>
+  <path d="M124 172 L130 160 L136 172" stroke="#d66823" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <g opacity="0.9">
+    <path d="M52 172 L52 154" stroke="#0f200b" stroke-width="3"/>
+    <path d="M38 158 Q52 136 66 158 Q62 148 58 152 Q54 146 50 150 Q46 146 42 152 Z" fill="#305725"/>
+  </g>
+  <g opacity="0.9">
+    <path d="M208 170 L208 152" stroke="#0f200b" stroke-width="3"/>
+    <path d="M194 156 Q208 134 222 156 Q218 146 214 150 Q210 144 206 148 Q202 144 198 150 Z" fill="#305725"/>
+  </g>
+</svg>

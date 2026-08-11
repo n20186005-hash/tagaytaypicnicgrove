@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="sky2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbefff"/>
+      <stop offset="100%" stop-color="#fdf6ee"/>
+    </linearGradient>
+    <linearGradient id="ridge2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4d8c3a"/>
+      <stop offset="100%" stop-color="#243b1d"/>
+    </linearGradient>
+    <linearGradient id="lake2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#60b8ff"/>
+      <stop offset="100%" stop-color="#2577ec"/>
+    </linearGradient>
+    <linearGradient id="volcano2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#305725"/>
+      <stop offset="100%" stop-color="#0f200b"/>
+    </linearGradient>
+    <linearGradient id="sun2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f2cea6"/>
+      <stop offset="100%" stop-color="#d66823"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#sky2)"/>
+  <circle cx="48" cy="18" r="7" fill="url(#sun2)" opacity="0.9"/>
+  <path d="M0 45 Q12 35 24 40 Q34 44 42 38 Q52 30 64 40 L64 64 L0 64 Z" fill="url(#ridge2)"/>
+  <ellipse cx="32" cy="47" rx="18" ry="4.5" fill="url(#lake2)"/>
+  <path d="M29 46 Q32 40 35 46 L34 48 L30 48 Z" fill="url(#volcano2)"/>
+</svg>

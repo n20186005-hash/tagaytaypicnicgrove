@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.wrangler
+*.log
+.DS_Store
+.dev.vars
+.pnpm-store
+.pnpm-cache
+.pnpm-home

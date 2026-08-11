@@ -1,0 +1,122 @@
+---
+import '../styles/global.css';
+import { siteConfig, attraction, mapsUrl } from '../config';
+
+export interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  faqJsonLd?: { '@type': string; mainEntity: any[] };
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+  ogImage = '/gallery/taal-volcano-panorama.jpg',
+  faqJsonLd,
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const canonicalAbsolute = siteConfig.url ? new URL(pathname, siteConfig.url).toString() : pathname;
+const ogUrl = siteConfig.url ? new URL(pathname, siteConfig.url).toString() : pathname;
+const ogImageAbsolute = siteConfig.url ? new URL(ogImage, siteConfig.url).toString() : ogImage;
+
+const faqItems = faqJsonLd?.mainEntity ?? [];
+
+const attractionJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': ['TouristAttraction', 'LocalBusiness'],
+  name: attraction.name,
+  alternateName: attraction.alternateName,
+  description: attraction.description,
+  image: ogImageAbsolute,
+  url: ogUrl,
+  priceRange: attraction.priceRange,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: attraction.address.streetAddress,
+    addressLocality: attraction.address.addressLocality,
+    addressRegion: attraction.address.addressRegion,
+    postalCode: attraction.address.postalCode,
+    addressCountry: attraction.address.addressCountry,
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: attraction.lat,
+    longitude: attraction.lng,
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: attraction.ratingValue,
+    reviewCount: attraction.reviewCount,
+  },
+  openingHoursSpecification: {
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday',
+    ],
+    opens: attraction.openingHours.opens,
+    closes: attraction.openingHours.closes,
+  },
+  sameAs: [mapsUrl],
+  touristType: ['Family', 'Couple', 'Group', 'Nature', 'Photography'],
+};
+
+const faqGraph = faqItems.length
+  ? [{ '@type': 'FAQPage', mainEntity: faqItems }]
+  : [];
+
+const jsonLdGraph = [attractionJsonLd, ...faqGraph];
+const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdGraph };
+---
+
+<!doctype html>
+<html lang={siteConfig.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#305725" />
+    <meta name="color-scheme" content="light" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    {siteConfig.url && <link rel="canonical" href={canonicalAbsolute} />}
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={siteConfig.locale} />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {siteConfig.url && <meta property="og:url" content={ogUrl} />}
+    <meta property="og:image" content={ogImageAbsolute} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageAbsolute} />
+
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+
+    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.ga4Id}`}></script>
+    <script is:inline set:html={`window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', ${JSON.stringify(siteConfig.ga4Id)}, { anonymize_ip: true });`}></script>
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <main id="main">
+      <slot />
+    </main>
+  </body>
+</html>

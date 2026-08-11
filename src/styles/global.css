@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+@theme {
+  --color-forest-50: #f2f8ef;
+  --color-forest-100: #e0efd9;
+  --color-forest-200: #c2dfb3;
+  --color-forest-300: #97c782;
+  --color-forest-400: #6aa954;
+  --color-forest-500: #4d8c3a;
+  --color-forest-600: #3b6e2c;
+  --color-forest-700: #305725;
+  --color-forest-800: #294620;
+  --color-forest-900: #243b1d;
+  --color-forest-950: #0f200b;
+
+  --color-lake-50: #eff8ff;
+  --color-lake-100: #dbefff;
+  --color-lake-200: #bfe4ff;
+  --color-lake-300: #93d3ff;
+  --color-lake-400: #60b8ff;
+  --color-lake-500: #3b96f7;
+  --color-lake-600: #2577ec;
+  --color-lake-700: #1f61d7;
+  --color-lake-800: #2150ae;
+  --color-lake-900: #214789;
+  --color-lake-950: #182c54;
+
+  --color-sunset-50: #fdf6ee;
+  --color-sunset-100: #f9e8d4;
+  --color-sunset-200: #f2cea6;
+  --color-sunset-300: #e9ac6f;
+  --color-sunset-400: #df833f;
+  --color-sunset-500: #d66823;
+  --color-sunset-600: #c7501a;
+  --color-sunset-700: #a53c18;
+  --color-sunset-800: #85311b;
+  --color-sunset-900: #6d2a1a;
+  --color-sunset-950: #3a130a;
+
+  --color-cream: #faf7f2;
+  --color-charcoal: #1e1e1e;
+  --color-muted: #4a4a4a;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --font-serif:
+    ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-charcoal);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1rem;
+  background: var(--color-forest-700);
+  color: #fff;
+  border-radius: 0.5rem;
+  width: auto;
+  height: auto;
+}
+
+.lightbox-backdrop {
+  backdrop-filter: blur(8px);
+}
+
+details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+details > summary::-webkit-details-marker {
+  display: none;
+}
