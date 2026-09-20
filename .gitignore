@@ -1,10 +1,44 @@
-node_modules
-dist
-.astro
-.wrangler
+# Dependencies
+node_modules/
+.pnpm-store/
+.pnpm-cache/
+.pnpm-home/
+
+# Build output
+dist/
+dist-ssr/
+.output/
+
+# Astro / Vite
+.astro/
+.astro/cache
+*.tsbuildinfo
+
+# Cloudflare Workers
+.wrangler/
+.mf/
+
+# Logs
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
 *.log
-.DS_Store
+
+# Environment
+.env
+.env.*
+!.env.example
 .dev.vars
-.pnpm-store
-.pnpm-cache
-.pnpm-home
+
+# Editors & OS
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary / generated assets
+tmp-*.mjs
+generated-images/
+coverage/

@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import { siteConfig, attraction, mapsUrl } from '../config';
+import { siteConfig, attraction, mapsUrl, entity } from '../config';
 
 export interface Props {
   title?: string;
@@ -18,38 +18,55 @@ const {
 
 const pathname = Astro.url.pathname;
 const canonicalAbsolute = siteConfig.url ? new URL(pathname, siteConfig.url).toString() : pathname;
-const ogUrl = siteConfig.url ? new URL(pathname, siteConfig.url).toString() : pathname;
+const ogUrl = canonicalAbsolute;
 const ogImageAbsolute = siteConfig.url ? new URL(ogImage, siteConfig.url).toString() : ogImage;
+const toAbsolute = (p: string) => (siteConfig.url ? new URL(p, siteConfig.url).toString() : p);
+
+const siteId = siteConfig.url ? `${siteConfig.url}/#website` : '/#website';
+const pageId = siteConfig.url ? `${canonicalAbsolute}#webpage` : `${pathname}#webpage`;
+const attractionId = siteConfig.url ? `${siteConfig.url}/#attraction` : '/#attraction';
+const breadcrumbId = siteConfig.url ? `${canonicalAbsolute}#breadcrumb` : `${pathname}#breadcrumb`;
+
+const ogImageAlt = `${entity.fullName} — main view in ${entity.cityName}, ${entity.countryName}`;
+
+const attractionImages = [
+  ogImage,
+  '/gallery/tagaytay-picnic-grove-13.jpg',
+  '/gallery/tagaytay-picnic-grove-1.jpg',
+  '/gallery/tagaytay-picnic-grove-8.jpg',
+].map(toAbsolute);
 
 const faqItems = faqJsonLd?.mainEntity ?? [];
 
+/**
+ * 注意：按 Google 结构化数据规范，第三方（Google Maps）评价内容不在本页 JSON-LD 中声明，
+ * 评分与评价数仅在页面正文中展示，并注明来源与同步时间。
+ */
 const attractionJsonLd = {
-  '@context': 'https://schema.org',
   '@type': ['TouristAttraction', 'LocalBusiness'],
-  name: attraction.name,
-  alternateName: attraction.alternateName,
-  description: attraction.description,
-  image: ogImageAbsolute,
-  url: ogUrl,
+  '@id': attractionId,
+  name: entity.fullName,
+  alternateName: [entity.shortName, `${entity.cityName} ${entity.fullName}`],
+  description: `Comprehensive visitor guide to ${entity.fullName} in ${entity.cityName}, ${entity.stateProvince}, ${entity.countryName}.`,
+  image: attractionImages,
+  url: canonicalAbsolute,
   priceRange: attraction.priceRange,
+  isAccessibleForFree: attraction.isAccessibleForFree,
   address: {
     '@type': 'PostalAddress',
     streetAddress: attraction.address.streetAddress,
-    addressLocality: attraction.address.addressLocality,
-    addressRegion: attraction.address.addressRegion,
-    postalCode: attraction.address.postalCode,
-    addressCountry: attraction.address.addressCountry,
+    addressLocality: entity.cityName,
+    addressRegion: entity.stateProvince,
+    postalCode: entity.postalCode,
+    addressCountry: entity.countryCode,
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: attraction.lat,
-    longitude: attraction.lng,
+    latitude: entity.latitude,
+    longitude: entity.longitude,
   },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: attraction.ratingValue,
-    reviewCount: attraction.reviewCount,
-  },
+  hasMap: mapsUrl,
+  sameAs: [mapsUrl, entity.govtTourismUrl],
   openingHoursSpecification: {
     '@type': 'OpeningHoursSpecification',
     dayOfWeek: [
@@ -64,15 +81,78 @@ const attractionJsonLd = {
     opens: attraction.openingHours.opens,
     closes: attraction.openingHours.closes,
   },
-  sameAs: [mapsUrl],
   touristType: ['Family', 'Couple', 'Group', 'Nature', 'Photography'],
+  publicAccess: true,
+  currenciesAccepted: 'PHP',
+  paymentAccepted: 'Cash, GCash, Maya',
+  amenityFeature: [
+    { '@type': 'LocationFeatureSpecification', name: 'Picnic cottages and BBQ areas', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Zipline over the ridge', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Scenic cable car', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Horseback riding trails', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Eco-trail and viewing decks', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Children’s playground', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Paid parking near the entrance', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Public restrooms', value: true },
+  ],
 };
 
-const faqGraph = faqItems.length
-  ? [{ '@type': 'FAQPage', mainEntity: faqItems }]
-  : [];
+const websiteJsonLd = {
+  '@type': 'WebSite',
+  '@id': siteId,
+  url: canonicalAbsolute,
+  name: `${entity.fullName} Visitor Guide`,
+  description: siteConfig.description,
+  inLanguage: 'en-PH',
+  publisher: { '@id': attractionId },
+};
 
-const jsonLdGraph = [attractionJsonLd, ...faqGraph];
+const webpageJsonLd = {
+  '@type': 'WebPage',
+  '@id': pageId,
+  url: canonicalAbsolute,
+  name: title,
+  description: siteConfig.description,
+  isPartOf: { '@id': siteId },
+  about: { '@id': attractionId },
+  breadcrumb: { '@id': breadcrumbId },
+  primaryImageOfPage: {
+    '@type': 'ImageObject',
+    url: ogImageAbsolute,
+    contentUrl: ogImageAbsolute,
+    caption: ogImageAlt,
+  },
+  inLanguage: 'en-PH',
+};
+
+const breadcrumbJsonLd = {
+  '@type': 'BreadcrumbList',
+  '@id': breadcrumbId,
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: `${entity.fullName} Guide`,
+      item: siteConfig.url || '/',
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: `${entity.fullName} (${entity.cityName})`,
+      item: canonicalAbsolute,
+    },
+  ],
+};
+
+const faqGraph = faqItems.length ? [{ '@type': 'FAQPage', mainEntity: faqItems }] : [];
+
+const jsonLdGraph = [
+  attractionJsonLd,
+  websiteJsonLd,
+  webpageJsonLd,
+  breadcrumbJsonLd,
+  ...faqGraph,
+];
 const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdGraph };
 ---
 
@@ -89,8 +169,17 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdGraph };
 
     {siteConfig.url && <link rel="canonical" href={canonicalAbsolute} />}
 
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="application-name" content={entity.fullName} />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content={entity.shortName} />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="en_PH" data-i18n-attr="content|og.locale" />
@@ -99,11 +188,13 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdGraph };
     <meta property="og:description" data-i18n-attr="content|site.description" content={description} />
     {siteConfig.url && <meta property="og:url" content={ogUrl} />}
     <meta property="og:image" content={ogImageAbsolute} />
+    <meta property="og:image:alt" content={ogImageAlt} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" data-i18n-attr="content|site.title" content={title} />
     <meta name="twitter:description" data-i18n-attr="content|site.description" content={description} />
     <meta name="twitter:image" content={ogImageAbsolute} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 
@@ -118,5 +209,12 @@ const jsonLd = { '@context': 'https://schema.org', '@graph': jsonLdGraph };
     <main id="main">
       <slot />
     </main>
+    <script is:inline>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js').catch(function () {});
+        });
+      }
+    </script>
   </body>
 </html>

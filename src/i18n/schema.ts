@@ -9,7 +9,17 @@ export interface UITranslations {
     nearby: string;
     gallery: string;
     faq: string;
+    reviews: string;
+    sources: string;
+    weather: string;
+    services: string;
+    routes: string;
+    science: string;
     viewOnMap: string;
+  };
+  breadcrumb: {
+    label: string;
+    home: string;
   };
   hero: {
     locationTag: string;
@@ -19,6 +29,7 @@ export interface UITranslations {
     buildChecklist: string;
     stats: {
       googleRating: string;
+      googleReviews: string;
       rollingPark: string;
       aboveSeaLevel: string;
       fromManila: string;
@@ -27,6 +38,7 @@ export interface UITranslations {
   overview: {
     title: string;
     aboutTitle: string;
+    p0: string;
     p1: string;
     p2: string;
     features: {
@@ -76,10 +88,99 @@ export interface UITranslations {
   };
   transport: {
     title: string;
+    gettingThere: string;
     subtitle: string;
     onTheMap: string;
     openLargerMap: string;
     fromAirports: string;
+  };
+  transportGuide: {
+    title: string;
+    subtitle: string;
+    stepsLabel: string;
+    timeLabel: string;
+    costLabel: string;
+    notesLabel: string;
+    tipsTitle: string;
+  };
+  weather: {
+    title: string;
+    subtitle: string;
+    currentTitle: string;
+    forecastTitle: string;
+    feelsLike: string;
+    humidity: string;
+    wind: string;
+    gust: string;
+    rain: string;
+    rainChance: string;
+    sunrise: string;
+    sunset: string;
+    uv: string;
+    uvHigh: string;
+    uvModerate: string;
+    uvLow: string;
+    updated: string;
+    umbrellaYes: string;
+    umbrellaNo: string;
+    note: string;
+    adviceTitle: string;
+    alertsTitle: string;
+    noAlerts: string;
+    outfitTitle: string;
+    planTitle: string;
+    packingTitle: string;
+    ridgeTitle: string;
+    windLevelLabel: string;
+    gustShort: string;
+    levelUnit: string;
+    visibilityLabel: string;
+    visibilityGood: string;
+    visibilityFair: string;
+    visibilityPoor: string;
+    elevationLabel: string;
+    elevationValue: string;
+    trailLabel: string;
+    trailDry: string;
+    trailWet: string;
+  };
+  seasonStrategy: {
+    title: string;
+    subtitle: string;
+    colSeason: string;
+    colWeather: string;
+    colVolcano: string;
+    colNature: string;
+    colAdvice: string;
+  };
+  services: {
+    title: string;
+    subtitle: string;
+    whereLabel: string;
+    tipsLabel: string;
+  };
+  routes: {
+    title: string;
+    subtitle: string;
+    audienceTitle: string;
+    suggestedTitle: string;
+    paceLabel: string;
+    stopsLabel: string;
+    tipsLabel: string;
+    durationLabel: string;
+  };
+  science: {
+    title: string;
+    subtitle: string;
+    geologyTitle: string;
+    volcanoTitle: string;
+    ecologyTitle: string;
+    responsibilityTitle: string;
+  };
+  legends: {
+    title: string;
+    subtitle: string;
+    note: string;
   };
   food: {
     title: string;
@@ -142,6 +243,33 @@ export interface UITranslations {
     title: string;
     subtitle: string;
   };
+  reviews: {
+    title: string;
+    subtitle: string;
+    fromGoogle: string;
+    ratingLabel: string;
+    countLabel: string;
+    viewAll: string;
+    sourceNote: string;
+    syncLine: string;
+    authorLabel: string;
+    positiveLabel: string;
+    criticalLabel: string;
+  };
+  history: {
+    title: string;
+    subtitle: string;
+    milestonesTitle: string;
+  };
+  sources: {
+    title: string;
+    subtitle: string;
+    reviewsEntry: string;
+    reviewsNote: string;
+    outboundTitle: string;
+    outboundLead: string;
+    outboundLink: string;
+  };
   footer: {
     tagline: string;
     unofficialGuide: string;
@@ -195,6 +323,54 @@ export interface DataTranslations {
     caption: Record<string, string>;
   };
   faq: { question: string; answer: string }[];
+  reviews: {
+    positive: { title: string; text: string }[];
+    critical: { title: string; text: string }[];
+  };
+  history: {
+    paragraphs: string[];
+    milestones: { year: string; text: string }[];
+  };
+  legends: { title: string; kind: string; text: string }[];
+  weatherCodes: Record<string, { label: string; icon: string }>;
+  weatherAdvice: Record<string, string>;
+  seasonStrategy: {
+    season: string;
+    months: string;
+    weather: string;
+    volcano: string;
+    nature: string;
+    advice: string;
+  }[];
+  services: { type: string; icon: string; what: string; where: string; tips: string }[];
+  audienceRoutes: {
+    audience: string;
+    icon: string;
+    summary: string;
+    pace: string;
+    stops: string[];
+    tips: string[];
+  }[];
+  suggestedRoutes: { name: string; duration: string; summary: string; steps: string[] }[];
+  science: {
+    geology: string[];
+    volcano: string[];
+    ecology: string[];
+    responsibility: string[];
+  };
+  transportGuide: {
+    routes: {
+      mode: string;
+      icon: string;
+      from: string;
+      steps: string[];
+      time: string;
+      cost: string;
+      notes: string;
+    }[];
+    tips: string[];
+  };
+  sources: { name: string; url: string; note: string }[];
   fees: {
     entrance: { label: string; note: string };
     cottages: { label: string; note: string };

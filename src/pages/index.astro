@@ -2,9 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { faqJsonLd as faqJsonLdEn } from '../data/faq';
 import { gallery, heroImage, heroImageOg } from '../data/gallery';
-import { mapsUrl, mapsEmbedSrc } from '../config';
+import { mapsUrl, mapsEmbedSrc, entity, googleReviews, attraction } from '../config';
 import { getTranslations } from '../i18n';
 import type { LanguageCode } from '../i18n/types';
+import { getWeatherSnapshot, weatherApiUrl } from '../data/weather';
+import { weatherAdviceHtml, weatherSummaryLine } from '../scripts/weather-advice-view';
+import {
+  activitiesRowsHtml,
+  faqHtml,
+  feesCardsHtml,
+  parkingBulletsHtml,
+  parkingHeadline,
+  paymentTipsHtml,
+  quickInfoHtml,
+} from '../scripts/sections-html';
 
 const translations = {
   en: getTranslations('en' as LanguageCode),
@@ -13,6 +24,17 @@ const translations = {
 
 const t = translations.en;
 const ui = t.ui;
+const data = t.data;
+
+/** 天气数据在服务端（构建期）获取并带缓存；页面加载后客户端会再做一次刷新。 */
+const weather = await getWeatherSnapshot();
+const weatherUrl = weatherApiUrl();
+const wc = (code: number) => data.weatherCodes[String(code)] ?? { label: '', icon: '⛅' };
+const fmtUpdated = new Date(weather.updatedAt).toLocaleString('en-PH', {
+  timeZone: 'Asia/Manila',
+  dateStyle: 'medium',
+  timeStyle: 'short',
+});
 ---
 
 <BaseLayout faqJsonLd={faqJsonLdEn} ogImage={heroImageOg}>
@@ -36,7 +58,10 @@ const ui = t.ui;
         <a href="#food" data-i18n="nav.food" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Food</a>
         <a href="#nearby" data-i18n="nav.nearby" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Nearby</a>
         <a href="#gallery" data-i18n="nav.gallery" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Gallery</a>
+        <a href="#reviews" data-i18n="nav.reviews" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Reviews</a>
         <a href="#faq" data-i18n="nav.faq" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">FAQ</a>
+        <a href="#weather" data-i18n="nav.weather" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Weather</a>
+        <a href="#services" data-i18n="nav.services" class="rounded-lg px-3 py-2 hover:bg-forest-100 hover:text-forest-800">Services</a>
       </nav>
       <div class="flex items-center gap-2">
         <div id="lang-switcher" class="relative">
@@ -61,13 +86,18 @@ const ui = t.ui;
 
   <section id="top" class="relative isolate overflow-hidden">
     <div class="absolute inset-0 -z-10">
-      <img id="hero-img" src={heroImage} alt="" class="h-full w-full object-cover" />
+      <img
+        id="hero-img"
+        src={heroImage}
+        alt={`${entity.fullName} - Main view in ${entity.cityName}, ${entity.countryName}`}
+        class="h-full w-full object-cover"
+      />
       <div class="absolute inset-0 bg-gradient-to-b from-forest-950/60 via-forest-950/40 to-forest-950/80"></div>
     </div>
     <div class="mx-auto max-w-7xl px-4 pb-28 pt-20 sm:px-6 lg:px-8 lg:pb-36 lg:pt-28">
       <div class="max-w-3xl text-cream">
         <span data-i18n="hero.locationTag" class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1.5 text-sm ring-1 ring-white/20 backdrop-blur">Taal Volcano ridge · Tagaytay City, Cavite</span>
-        <h1 data-i18n="hero.title" class="mt-5 font-serif text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">Tagaytay Picnic Grove</h1>
+        <h1 data-i18n="hero.title" class="mt-5 font-serif text-4xl font-bold leading-tight sm:text-5xl lg:text-6xl">Tagaytay Picnic Grove (Tagaytay City)</h1>
         <p data-i18n="hero.subtitle" class="mt-5 max-w-2xl text-lg text-cream/90 sm:text-xl">Ridge-top picnic cottages, BBQ with family and barkada, zipline over the ridge, horseback trails, and an unbeatable Taal Volcano view — under two hours from Manila.</p>
         <div class="mt-8 flex flex-wrap gap-3">
           <a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="hero.getDirections" class="inline-flex items-center gap-2 rounded-lg bg-sunset-500 px-5 py-3 text-base font-semibold text-white shadow-lg shadow-sunset-500/30 hover:bg-sunset-600">Get Directions</a>
@@ -76,8 +106,10 @@ const ui = t.ui;
       </div>
       <div class="mt-14 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
         <div class="rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur">
-          <div class="text-2xl font-bold text-cream">4.3 ★</div>
-          <div data-i18n="hero.stats.googleRating" class="mt-1 text-xs text-cream/80">Google rating</div>
+          <div class="text-2xl font-bold text-cream">{googleReviews.ratingValueDisplay} ★</div>
+          <div class="mt-1 text-xs text-cream/80">
+            <span data-i18n="hero.stats.googleRating">Google rating</span> · {googleReviews.reviewCountDisplay} <span data-i18n="hero.stats.googleReviews">Google reviews</span>
+          </div>
         </div>
         <div class="rounded-xl bg-white/10 p-4 ring-1 ring-white/20 backdrop-blur">
           <div class="text-2xl font-bold text-cream">13.5 ha</div>
@@ -92,14 +124,35 @@ const ui = t.ui;
           <div data-i18n="hero.stats.fromManila" class="mt-1 text-xs text-cream/80">from Manila (light traffic)</div>
         </div>
       </div>
+      <p class="mt-4 max-w-3xl text-xs text-cream/70">
+        <a href={googleReviews.sourceUrl} target="_blank" rel="noopener noreferrer" class="underline hover:text-cream">
+          <span data-i18n="reviews.syncLine">评分与评价数同步自谷歌地图（Google Maps）用户评价 · 2026 年 9 月 · 点击查看谷歌地图全部评价↗</span>
+        </a>
+      </p>
     </div>
   </section>
 
   <section id="overview" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <nav aria-label="Breadcrumb" class="mb-8 flex flex-wrap items-center gap-2 text-sm text-muted">
+      <span class="font-semibold text-forest-700" data-i18n="breadcrumb.label">You are here</span>
+      <span aria-hidden="true">·</span>
+      <ol class="flex flex-wrap items-center gap-2">
+        <li><a href="#top" class="hover:text-forest-800" data-i18n="breadcrumb.home">Guide home</a></li>
+        <li aria-hidden="true">→</li>
+        <li class="font-medium text-charcoal">{entity.fullName}</li>
+        <li aria-hidden="true">→</li>
+        <li>{entity.cityName}</li>
+        <li aria-hidden="true">→</li>
+        <li>{entity.stateProvince}</li>
+        <li aria-hidden="true">→</li>
+        <li>{entity.countryName}</li>
+      </ol>
+    </nav>
     <div class="grid gap-10 lg:grid-cols-3">
       <div class="lg:col-span-2">
-        <h2 data-i18n="overview.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">About the Grove</h2>
-        <p data-i18n="overview.p1" class="mt-4 text-lg leading-relaxed text-muted">{ui.overview.p1}</p>
+        <h2 data-i18n="overview.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">About Tagaytay Picnic Grove</h2>
+        <p data-i18n="overview.p0" class="mt-4 text-lg leading-relaxed text-muted">{ui.overview.p0}</p>
+        <p data-i18n="overview.p1" class="mt-3 text-lg leading-relaxed text-muted">{ui.overview.p1}</p>
         <p data-i18n="overview.p2" class="mt-3 text-lg leading-relaxed text-muted">{ui.overview.p2}</p>
         <div id="feature-cards" class="mt-10 grid gap-4 sm:grid-cols-2"></div>
         <div class="mt-10">
@@ -109,7 +162,7 @@ const ui = t.ui;
       <aside class="space-y-4">
         <div class="rounded-2xl bg-forest-50 p-6 ring-1 ring-forest-100">
           <h3 data-i18n="overview.quickInfo.title" class="font-semibold text-forest-800">Quick Info</h3>
-          <dl id="quickinfo-list" class="mt-4 space-y-4 text-sm"></dl>
+          <dl id="quickinfo-list" class="mt-4 space-y-4 text-sm" set:html={quickInfoHtml(ui, data, entity)}></dl>
         </div>
         <div class="rounded-2xl bg-sunset-50 p-6 ring-1 ring-sunset-200">
           <p data-i18n="overview.disclaimer" class="text-sm text-sunset-900">{ui.overview.disclaimer}</p>
@@ -118,14 +171,48 @@ const ui = t.ui;
     </div>
   </section>
 
+  <section id="history" class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 data-i18n="history.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">History &amp; Significance of Tagaytay Picnic Grove</h2>
+      <p data-i18n="history.subtitle" class="mt-3 max-w-3xl text-muted">{ui.history.subtitle}</p>
+      <div id="history-paragraphs" class="mt-8 max-w-3xl space-y-4 text-lg leading-relaxed text-muted"></div>
+      <div class="mt-10">
+        <h3 data-i18n="history.milestonesTitle" class="font-semibold text-forest-800">Timeline</h3>
+        <ol id="history-milestones" class="mt-4 space-y-3"></ol>
+      </div>
+      <div class="mt-12">
+        <h3 data-i18n="legends.title" class="font-semibold text-forest-800">{ui.legends.title}</h3>
+        <p data-i18n="legends.subtitle" class="mt-2 max-w-3xl text-sm text-muted">{ui.legends.subtitle}</p>
+        <div id="legends-list" class="mt-4 grid gap-4 lg:grid-cols-2">
+          {data.legends.map((l) => (
+            <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+              <div class="flex flex-wrap items-center gap-2">
+                <h4 class="font-semibold text-forest-800">{l.title}</h4>
+                <span class="rounded-full bg-forest-50 px-3 py-1 text-xs font-semibold text-forest-700">{l.kind}</span>
+              </div>
+              <p class="mt-2 text-sm text-muted">{l.text}</p>
+            </article>
+          ))}
+        </div>
+        <p id="legends-note" class="mt-4 max-w-3xl text-xs text-muted">{ui.legends.note}</p>
+      </div>
+      <p class="mt-8 max-w-3xl text-sm text-muted">
+        For official updates and regional tourism information, visit
+        <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-forest-700 underline hover:text-forest-800">{entity.govtTourismLabel}</a>.
+        Current volcano alert levels are published by
+        <a href={entity.phivolcsUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-forest-700 underline hover:text-forest-800">PHIVOLCS</a>.
+      </p>
+    </div>
+  </section>
+
   <section id="fees" class="bg-forest-50/60 py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <h2 data-i18n="fees.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Tickets, &amp; Activities</h2>
       <p data-i18n="fees.disclaimer" class="mt-3 max-w-3xl text-muted">{ui.fees.disclaimer}</p>
-      <div id="fees-cards" class="mt-8 grid gap-5 md:grid-cols-2"></div>
+      <div id="fees-cards" class="mt-8 grid gap-5 md:grid-cols-2" set:html={feesCardsHtml(data)}></div>
       <div class="mt-10">
         <h3 data-i18n="fees.activities.title" class="font-semibold text-forest-800">Activities</h3>
-        <div class="mt-4 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-forest-100">
+        <div class="mt-4 overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-forest-100">
           <table class="w-full text-left text-sm">
             <thead class="bg-forest-700 text-cream">
               <tr>
@@ -134,18 +221,18 @@ const ui = t.ui;
                 <th data-i18n="fees.activities.notes" class="px-5 py-3 font-semibold">Notes</th>
               </tr>
             </thead>
-            <tbody id="activities-table"></tbody>
+            <tbody id="activities-table" set:html={activitiesRowsHtml(data, 'en')}></tbody>
           </table>
         </div>
       </div>
-      <div id="payment-tips" class="mt-10 rounded-2xl bg-lake-50 p-6 ring-1 ring-lake-200"></div>
+      <div id="payment-tips" class="mt-10 rounded-2xl bg-lake-50 p-6 ring-1 ring-lake-200" set:html={paymentTipsHtml(data)}></div>
     </div>
   </section>
 
   <section id="parking" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <h2 data-i18n="parking.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Parking Info</h2>
-    <p id="parking-headline" class="mt-3 max-w-3xl text-muted"></p>
-    <ul id="parking-bullets" class="mt-8 grid gap-4 sm:grid-cols-2"></ul>
+    <p id="parking-headline" class="mt-3 max-w-3xl text-muted" set:html={parkingHeadline(data)}></p>
+    <ul id="parking-bullets" class="mt-8 grid gap-4 sm:grid-cols-2" set:html={parkingBulletsHtml(data)}></ul>
   </section>
 
   <section id="best-time" class="bg-cream py-16">
@@ -177,11 +264,101 @@ const ui = t.ui;
     </div>
   </section>
 
+  <section id="weather" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <h2 data-i18n="weather.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">{ui.weather.title}</h2>
+    <p data-i18n="weather.subtitle" class="mt-3 max-w-3xl text-muted">{ui.weather.subtitle}</p>
+
+    <div id="weather-current" class="mt-8 grid gap-6 lg:grid-cols-3">
+      <div class="rounded-2xl bg-forest-50 p-6 ring-1 ring-forest-100">
+        <div class="flex items-center gap-4">
+          <span class="text-4xl">{wc(weather.current.weatherCode).icon}</span>
+          <div>
+            <div class="font-serif text-3xl font-bold text-forest-800">{Math.round(weather.current.temperature)}°C</div>
+            <div class="text-sm text-muted">{wc(weather.current.weatherCode).label}</div>
+          </div>
+        </div>
+        <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
+          <div><dt class="text-muted" data-i18n="weather.feelsLike">{ui.weather.feelsLike}</dt><dd class="font-semibold text-charcoal">{Math.round(weather.current.apparentTemperature)}°C</dd></div>
+          <div><dt class="text-muted" data-i18n="weather.humidity">{ui.weather.humidity}</dt><dd class="font-semibold text-charcoal">{weather.current.humidity}%</dd></div>
+          <div><dt class="text-muted" data-i18n="weather.wind">{ui.weather.wind}</dt><dd class="font-semibold text-charcoal">{weather.current.windSpeed} km/h</dd></div>
+          <div><dt class="text-muted" data-i18n="weather.gust">{ui.weather.gust}</dt><dd class="font-semibold text-charcoal">{weather.current.windGust} km/h</dd></div>
+        </dl>
+      </div>
+      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100 lg:col-span-2">
+        <p class="text-sm font-medium text-charcoal">{weatherSummaryLine(weather, ui.weather, data.weatherCodes)}</p>
+        <p class="mt-2 font-semibold text-forest-800">
+          {(weather.daily[0]?.precipitationProbability ?? 0) >= 60 ? ui.weather.umbrellaYes : ui.weather.umbrellaNo}
+        </p>
+        <dl class="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+          <div><dt class="text-muted" data-i18n="weather.sunrise">{ui.weather.sunrise}</dt><dd class="font-semibold text-charcoal">{weather.daily[0]?.sunrise || '-'}</dd></div>
+          <div><dt class="text-muted" data-i18n="weather.sunset">{ui.weather.sunset}</dt><dd class="font-semibold text-charcoal">{weather.daily[0]?.sunset || '-'}</dd></div>
+          <div><dt class="text-muted" data-i18n="weather.uv">{ui.weather.uv}</dt><dd class="font-semibold text-charcoal">{weather.daily[0]?.uvIndexMax ?? '-'}</dd></div>
+          <div><dt class="text-muted" data-i18n="weather.updated">{ui.weather.updated}</dt><dd class="font-semibold text-charcoal">{fmtUpdated}</dd></div>
+        </dl>
+        <p class="mt-4 text-sm text-muted" data-i18n="weather.note">{ui.weather.note}</p>
+      </div>
+    </div>
+
+    <div id="weather-advice" set:html={weatherAdviceHtml(weather, ui.weather, data.weatherAdvice)}></div>
+
+    <h3 data-i18n="weather.forecastTitle" class="mt-10 font-semibold text-forest-800">{ui.weather.forecastTitle}</h3>
+    <div id="weather-forecast" class="mt-4 grid gap-3 sm:grid-cols-3 lg:grid-cols-7">
+      {weather.daily.map((d) => (
+        <div class="rounded-2xl border border-forest-100 bg-white p-4 text-center shadow-sm">
+          <div class="text-xs font-semibold text-forest-800">{d.weekday}</div>
+          <div class="mt-1 text-xs text-muted">{d.date.slice(5)}</div>
+          <div class="mt-2 text-2xl">{wc(d.weatherCode).icon}</div>
+          <div class="mt-2 font-semibold text-charcoal">{d.tempMax}° / {d.tempMin}°</div>
+          <div class="mt-1 text-xs text-muted">💧 {d.precipitationProbability}%</div>
+          <div class="text-xs text-muted">{d.precipitation} mm</div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section id="season-strategy" class="bg-forest-50/60 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 data-i18n="seasonStrategy.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">{ui.seasonStrategy.title}</h2>
+      <p data-i18n="seasonStrategy.subtitle" class="mt-3 max-w-3xl text-muted">{ui.seasonStrategy.subtitle}</p>
+      <div class="mt-8 overflow-x-auto rounded-2xl bg-white shadow-sm ring-1 ring-forest-100">
+        <table class="w-full min-w-[900px] border-collapse text-left text-sm">
+          <thead id="season-strategy-head" class="bg-forest-50 text-forest-800">
+            <tr>
+              <th scope="col" class="px-4 py-3">{ui.seasonStrategy.colSeason}</th>
+              <th scope="col" class="px-4 py-3">{ui.seasonStrategy.colWeather}</th>
+              <th scope="col" class="px-4 py-3">{ui.seasonStrategy.colVolcano}</th>
+              <th scope="col" class="px-4 py-3">{ui.seasonStrategy.colNature}</th>
+              <th scope="col" class="px-4 py-3">{ui.seasonStrategy.colAdvice}</th>
+            </tr>
+          </thead>
+          <tbody id="season-strategy-rows">
+            {data.seasonStrategy.map((r) => (
+              <tr class="border-t border-forest-100 align-top">
+                <th scope="row" class="px-4 py-4 text-left">
+                  <span class="font-semibold text-forest-800">{r.season}</span>
+                  <span class="mt-1 block text-xs font-normal text-muted">{r.months}</span>
+                </th>
+                <td class="px-4 py-4">{r.weather}</td>
+                <td class="px-4 py-4">{r.volcano}</td>
+                <td class="px-4 py-4">{r.nature}</td>
+                <td class="px-4 py-4">{r.advice}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
   <section id="transport" class="bg-forest-50/60 py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 data-i18n="transport.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Getting There</h2>
+      <h2 data-i18n="transport.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Location &amp; How to Visit Picnic Grove Tagaytay in Tagaytay City</h2>
       <p data-i18n="transport.subtitle" class="mt-3 max-w-3xl text-muted">Driving, bus + jeepney commute, ride-hailing, and airports — all the common ways to reach Picnic Grove from Metro Manila.</p>
-      <div id="transport-cards" class="mt-10 grid gap-5 lg:grid-cols-2"></div>
+      <p class="mt-3 max-w-3xl text-sm text-muted">
+        {entity.fullName} · {attraction.address.streetAddress}, {entity.cityName}, {entity.stateProvince} {entity.postalCode}, {entity.countryName} · Plus code {entity.plusCode} · {entity.latitude}, {entity.longitude}
+      </p>
+      <h3 data-i18n="transport.gettingThere" class="mt-8 font-semibold text-forest-800">Getting There</h3>
+      <div id="transport-cards" class="mt-4 grid gap-5 lg:grid-cols-2"></div>
       <div class="mt-12">
         <h3 data-i18n="transport.onTheMap" class="font-semibold text-forest-800">On the map</h3>
         <div class="mt-4 overflow-hidden rounded-2xl shadow-sm ring-1 ring-forest-100">
@@ -196,16 +373,141 @@ const ui = t.ui;
     </div>
   </section>
 
+  <section id="transport-guide" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <h2 data-i18n="transportGuide.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">{ui.transportGuide.title}</h2>
+    <p data-i18n="transportGuide.subtitle" class="mt-3 max-w-3xl text-muted">{ui.transportGuide.subtitle}</p>
+    <div id="transport-guide-routes" class="mt-10 grid gap-5 lg:grid-cols-2">
+      {data.transportGuide.routes.map((r) => (
+        <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+          <h3 class="flex items-center gap-2 font-semibold text-forest-800"><span aria-hidden="true">{r.icon}</span>{r.mode}</h3>
+          <p class="mt-1 text-xs font-semibold text-forest-700">{r.from}</p>
+          <h4 class="mt-3 text-sm font-semibold text-forest-800">{ui.transportGuide.stepsLabel}</h4>
+          <ol class="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted">
+            {r.steps.map((s) => <li>{s}</li>)}
+          </ol>
+          <dl class="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+            <div><dt class="font-semibold text-forest-700">{ui.transportGuide.timeLabel}</dt><dd class="text-muted">{r.time}</dd></div>
+            <div><dt class="font-semibold text-forest-700">{ui.transportGuide.costLabel}</dt><dd class="text-muted">{r.cost}</dd></div>
+          </dl>
+          <p class="mt-3 text-sm text-muted"><span class="font-semibold text-forest-700">{ui.transportGuide.notesLabel}:</span> {r.notes}</p>
+        </article>
+      ))}
+    </div>
+    <div class="mt-10 rounded-2xl bg-forest-50 p-6 ring-1 ring-forest-100">
+      <h3 data-i18n="transportGuide.tipsTitle" class="font-semibold text-forest-800">{ui.transportGuide.tipsTitle}</h3>
+      <ul id="transport-guide-tips" class="mt-3 list-disc space-y-1.5 pl-5 text-sm text-muted">
+        {data.transportGuide.tips.map((s) => <li>{s}</li>)}
+      </ul>
+    </div>
+  </section>
+
   <section id="food" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
     <h2 data-i18n="food.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Places to Eat Nearby</h2>
     <p data-i18n="food.subtitle" class="mt-3 max-w-3xl text-muted">Tagaytay's food strip starts a short drive east along the ridge. Bulalo, classic Filipino, and a handful of destination restaurants.</p>
     <div id="food-cards" class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
   </section>
 
+  <section id="services" class="bg-forest-50/60 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 data-i18n="services.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">{ui.services.title}</h2>
+      <p data-i18n="services.subtitle" class="mt-3 max-w-3xl text-muted">{ui.services.subtitle}</p>
+      <div id="services-cards" class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {data.services.map((s) => (
+          <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+            <h3 class="flex items-center gap-2 font-semibold text-forest-800"><span aria-hidden="true">{s.icon}</span>{s.type}</h3>
+            <p class="mt-2 text-sm text-muted">{s.what}</p>
+            <dl class="mt-3 space-y-2 text-sm">
+              <div><dt class="font-semibold text-forest-700">{ui.services.whereLabel}</dt><dd class="text-muted">{s.where}</dd></div>
+              <div><dt class="font-semibold text-forest-700">{ui.services.tipsLabel}</dt><dd class="text-muted">{s.tips}</dd></div>
+            </dl>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="routes" class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <h2 data-i18n="routes.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">{ui.routes.title}</h2>
+    <p data-i18n="routes.subtitle" class="mt-3 max-w-3xl text-muted">{ui.routes.subtitle}</p>
+
+    <h3 data-i18n="routes.audienceTitle" class="mt-10 font-semibold text-forest-800">{ui.routes.audienceTitle}</h3>
+    <div id="audience-routes" class="mt-4 grid gap-5 lg:grid-cols-3">
+      {data.audienceRoutes.map((r) => (
+        <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+          <h4 class="flex items-center gap-2 font-semibold text-forest-800"><span aria-hidden="true">{r.icon}</span>{r.audience}</h4>
+          <p class="mt-2 text-sm text-muted">{r.summary}</p>
+          <p class="mt-2 text-xs font-semibold text-forest-700">{ui.routes.paceLabel}: {r.pace}</p>
+          <h5 class="mt-3 text-sm font-semibold text-forest-800">{ui.routes.stopsLabel}</h5>
+          <ol class="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted">
+            {r.stops.map((s) => <li>{s}</li>)}
+          </ol>
+          <h5 class="mt-3 text-sm font-semibold text-forest-800">{ui.routes.tipsLabel}</h5>
+          <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
+            {r.tips.map((s) => <li>{s}</li>)}
+          </ul>
+        </article>
+      ))}
+    </div>
+
+    <h3 data-i18n="routes.suggestedTitle" class="mt-12 font-semibold text-forest-800">{ui.routes.suggestedTitle}</h3>
+    <div id="suggested-routes" class="mt-4 grid gap-5 lg:grid-cols-3">
+      {data.suggestedRoutes.map((r) => (
+        <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+          <div class="flex flex-wrap items-baseline justify-between gap-2">
+            <h4 class="font-semibold text-forest-800">{r.name}</h4>
+            <span class="rounded-full bg-forest-50 px-3 py-1 text-xs font-semibold text-forest-700">{ui.routes.durationLabel}: {r.duration}</span>
+          </div>
+          <p class="mt-2 text-sm text-muted">{r.summary}</p>
+          <ol class="mt-3 list-decimal space-y-1 pl-5 text-sm text-muted">
+            {r.steps.map((s) => <li>{s}</li>)}
+          </ol>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="science" class="bg-white py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 data-i18n="science.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">{ui.science.title}</h2>
+      <p data-i18n="science.subtitle" class="mt-3 max-w-3xl text-muted">{ui.science.subtitle}</p>
+      <div class="mt-8 grid gap-6 lg:grid-cols-2">
+        <div id="science-geology" class="rounded-2xl border border-forest-100 bg-white p-6 shadow-sm">
+          <h3 class="font-semibold text-forest-800">{ui.science.geologyTitle}</h3>
+          <ul class="mt-3 list-disc space-y-2 pl-5 text-muted">
+            {data.science.geology.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+        <div id="science-volcano" class="rounded-2xl border border-forest-100 bg-white p-6 shadow-sm">
+          <h3 class="font-semibold text-forest-800">{ui.science.volcanoTitle}</h3>
+          <ul class="mt-3 list-disc space-y-2 pl-5 text-muted">
+            {data.science.volcano.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+        <div id="science-ecology" class="rounded-2xl border border-forest-100 bg-white p-6 shadow-sm">
+          <h3 class="font-semibold text-forest-800">{ui.science.ecologyTitle}</h3>
+          <ul class="mt-3 list-disc space-y-2 pl-5 text-muted">
+            {data.science.ecology.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+        <div id="science-responsibility" class="rounded-2xl border border-sunset-200 bg-sunset-50 p-6 shadow-sm">
+          <h3 class="font-semibold text-sunset-900">{ui.science.responsibilityTitle}</h3>
+          <ul class="mt-3 list-disc space-y-2 pl-5 text-sunset-900/90">
+            {data.science.responsibility.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section id="nearby" class="bg-sunset-50/40 py-16">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-      <h2 data-i18n="nearby.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Other Things to Do Nearby</h2>
+      <h2 data-i18n="nearby.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Landmarks &amp; Attractions Around Picnic Grove Tagaytay</h2>
       <p data-i18n="nearby.subtitle" class="mt-3 max-w-3xl text-muted">Pair Picnic Grove with one of these for a full day on the ridge.</p>
+      <p class="mt-3 max-w-3xl text-muted">
+        When visiting {entity.fullName}, visitors can easily explore surrounding historical landmarks and points of interest, including
+        <strong class="font-semibold text-forest-800">{entity.nearbyLandmark1}</strong> and
+        <strong class="font-semibold text-forest-800">{entity.nearbyLandmark2}</strong>.
+      </p>
       <div id="nearby-cards" class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"></div>
     </div>
   </section>
@@ -337,7 +639,81 @@ const ui = t.ui;
   <section id="faq" class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
     <h2 data-i18n="faq.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">FAQ</h2>
     <p data-i18n="faq.subtitle" class="mt-3 text-muted">Common questions answered by other visitors.</p>
-    <div id="faq-items" class="mt-10 space-y-3"></div>
+    <div id="faq-items" class="mt-10 space-y-3" set:html={faqHtml(data)}></div>
+  </section>
+
+  <section id="reviews" class="bg-forest-50/60 py-16">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <h2 data-i18n="reviews.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Visitor Reviews &amp; Ratings for Tagaytay Picnic Grove</h2>
+      <p data-i18n="reviews.subtitle" class="mt-3 max-w-3xl text-muted">{ui.reviews.subtitle}</p>
+
+      <p class="mt-4 max-w-3xl text-sm font-semibold text-forest-800">
+        <span data-i18n="reviews.fromGoogle">评价来自谷歌地图用户评价 点击查看谷歌地图全部评价：</span>
+        <a href={googleReviews.sourceUrl} target="_blank" rel="noopener noreferrer" class="underline hover:text-forest-900">Google Maps ↗</a>
+      </p>
+      <p class="mt-1 max-w-3xl text-xs text-muted">
+        <a href={googleReviews.sourceUrl} target="_blank" rel="noopener noreferrer" class="underline hover:text-forest-800">
+          <span data-i18n="reviews.syncLine">评分与评价数同步自谷歌地图（Google Maps）用户评价 · 2026 年 9 月 · 点击查看谷歌地图全部评价↗</span>
+        </a>
+      </p>
+
+      <div class="mt-8 grid gap-6 lg:grid-cols-3">
+        <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
+          <div class="flex items-baseline gap-3">
+            <span class="font-serif text-5xl font-bold text-sunset-600">{googleReviews.ratingValueDisplay}</span>
+            <span class="text-2xl text-sunset-500">★★★★★</span>
+          </div>
+          <div class="mt-2 text-sm font-semibold text-forest-800">
+            {googleReviews.reviewCountDisplay} <span data-i18n="reviews.countLabel">Google reviews</span>
+          </div>
+          <div class="mt-1 text-xs text-muted"><span data-i18n="reviews.ratingLabel">Google rating</span> · {googleReviews.syncedAt}</div>
+        </div>
+        <div class="lg:col-span-2">
+          <h3 data-i18n="reviews.positiveLabel" class="font-semibold text-forest-800">What visitors praise</h3>
+          <div id="reviews-positive" class="mt-4 grid gap-4 sm:grid-cols-2"></div>
+        </div>
+      </div>
+
+      <div class="mt-8">
+        <h3 data-i18n="reviews.criticalLabel" class="font-semibold text-forest-800">What visitors caution about</h3>
+        <div id="reviews-critical" class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </div>
+
+      <p class="mt-8 max-w-3xl rounded-2xl bg-white p-4 text-xs text-muted ring-1 ring-forest-100">
+        <span data-i18n="reviews.sourceNote">同步自 Google 地图用户评价，同步时间 2026 年 9 月；版权归原作者与 Google 地图所有</span>
+      </p>
+      <div class="mt-6">
+        <a href={googleReviews.sourceUrl} target="_blank" rel="noopener noreferrer" data-i18n="reviews.viewAll" class="inline-flex items-center gap-2 rounded-xl bg-forest-700 px-6 py-3 font-semibold text-white shadow hover:bg-forest-800">在谷歌地图查看全部评价</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="sources" class="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <h2 data-i18n="sources.title" class="font-serif text-3xl font-bold text-forest-800 sm:text-4xl">Sources &amp; References</h2>
+    <p data-i18n="sources.subtitle" class="mt-3 text-muted">{ui.sources.subtitle}</p>
+    <ul id="sources-list" class="mt-8 space-y-3"></ul>
+
+    <div class="mt-10 rounded-2xl bg-forest-50 p-6 ring-1 ring-forest-100">
+      <h3 class="font-semibold text-forest-800"><span data-i18n="sources.reviewsEntry">评价 · 同步时间 2026 年 9 月</span></h3>
+      <p class="mt-2 text-sm text-muted">
+        <span data-i18n="sources.reviewsNote">同步自 Google 地图用户评价，同步时间 2026 年 9 月；版权归原作者与 Google 地图所有</span>
+      </p>
+      <a href={googleReviews.sourceUrl} target="_blank" rel="noopener noreferrer" class="mt-3 inline-flex items-center gap-2 rounded-lg bg-forest-700 px-5 py-2.5 text-sm font-semibold text-white shadow hover:bg-forest-800">
+        <span data-i18n="reviews.viewAll">在谷歌地图查看全部评价</span>
+      </a>
+    </div>
+
+    <div class="mt-8">
+      <h3 class="font-semibold text-forest-800"><span data-i18n="sources.outboundTitle">Official &amp; authoritative links</span></h3>
+      <p class="mt-2 text-sm text-muted" data-i18n="sources.outboundLead">{ui.sources.outboundLead}</p>
+      <p class="mt-3 text-sm">
+        <a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-forest-700 underline hover:text-forest-800"><span data-i18n="sources.outboundLink">Philippines / Cavite Official Tourism Portal</span></a>
+        <span class="text-muted"> · </span>
+        <a href={entity.phivolcsUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-forest-700 underline hover:text-forest-800">PHIVOLCS — Taal Volcano alert level</a>
+        <span class="text-muted"> · </span>
+        <a href={mapsUrl} target="_blank" rel="noopener noreferrer" class="font-semibold text-forest-700 underline hover:text-forest-800">Google Maps listing ↗</a>
+      </p>
+    </div>
   </section>
 
   <footer class="border-t border-forest-100 bg-forest-900 py-14 text-cream">
@@ -372,6 +748,11 @@ const ui = t.ui;
             <li><a href="#nearby" data-i18n="footer.sections.nearbySpots" class="hover:text-cream">Nearby spots</a></li>
             <li><a href="#gallery" data-i18n="footer.sections.photoGallery" class="hover:text-cream">Photo gallery</a></li>
             <li><a href="#itinerary" data-i18n="footer.sections.tripChecklist" class="hover:text-cream">Trip checklist</a></li>
+            <li><a href="#reviews" data-i18n="nav.reviews" class="hover:text-cream">Reviews</a></li>
+            <li><a href="#weather" data-i18n="nav.weather" class="hover:text-cream">Weather</a></li>
+            <li><a href="#routes" data-i18n="nav.routes" class="hover:text-cream">Routes</a></li>
+            <li><a href="#science" data-i18n="nav.science" class="hover:text-cream">Science</a></li>
+            <li><a href="#sources" data-i18n="nav.sources" class="hover:text-cream">Sources</a></li>
           </ul>
         </div>
         <div>
@@ -380,6 +761,8 @@ const ui = t.ui;
             <li data-i18n="footer.sections.tagaytayTourism">Tagaytay City Tourism</li>
             <li data-i18n="footer.sections.cityTagaytay">City of Tagaytay, Cavite, PH</li>
             <li><a href={mapsUrl} target="_blank" rel="noopener noreferrer" data-i18n="footer.sections.googleMapsListing" class="underline">Google Maps listing ↗</a></li>
+            <li><a href={entity.govtTourismUrl} target="_blank" rel="noopener noreferrer" class="underline">Tagaytay City official portal ↗</a></li>
+            <li><a href={entity.phivolcsUrl} target="_blank" rel="noopener noreferrer" class="underline">PHIVOLCS volcano bulletin ↗</a></li>
           </ul>
         </div>
       </div>
@@ -407,6 +790,14 @@ const ui = t.ui;
 <script is:inline set:html={`window.__TPG_MAPS_URL__ = ${JSON.stringify(mapsUrl)};`}></script>
 
 <script is:inline set:html={`window.__TPG_GALLERY_FILES__ = ${JSON.stringify(gallery.map(g => ({ id: g.id, src: g.src })))};`}></script>
+
+<script is:inline set:html={`window.__TPG_ENTITY__ = ${JSON.stringify({ plusCode: entity.plusCode, latitude: entity.latitude, longitude: entity.longitude })};`}></script>
+
+<script is:inline set:html={`window.__TPG_WEATHER__ = ${JSON.stringify(weather)};`}></script>
+<script is:inline set:html={`window.__TPG_WEATHER_URL__ = ${JSON.stringify(weatherUrl)};`}></script>
+<script>
+  import '../scripts/weather-live';
+</script>
 
 <script>
   import '../scripts/i18n';

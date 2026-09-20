@@ -79,6 +79,21 @@ export const faqItems: FAQItem[] = [
     answer:
       'Most ticket booths and vendors are cash-first. Some stalls accept GCash or Maya; debit and credit cards are rarely accepted. Bring enough Philippine pesos in small bills (P20, P50, P100, P500) for entrance, parking, tricycles, and snacks.',
   },
+  {
+    question: 'What time does Picnic Grove close, and when is the last entry?',
+    answer:
+      'The posted closing time is 8:00 PM (20:00) daily. Ticket sales and activity counters (zipline, cable car, horseback riding) usually wind down about 30–60 minutes before closing, and rides stop earlier in bad weather or low visibility. For activities, arrive no later than 5:00–6:00 PM; for a sunset picnic, arriving by 4:00–5:00 PM still leaves 2–3 comfortable hours.',
+  },
+  {
+    question: 'How much is the parking fee, and is parking free?',
+    answer:
+      'Parking is not free — there is a flat-rate fee per entry collected at the lot beside the main gate. Cars, SUVs and vans pay one rate, buses a higher rate, and motorcycles use a separate area. Rates change without notice, so treat any figure you find online as a reference only and confirm at the gate. On weekends and holidays the lot often fills before 10:00 AM.',
+  },
+  {
+    question: 'Is Picnic Grove good for kids (a “pasyalan for kids”)?',
+    answer:
+      'Yes — it is one of the easier Tagaytay stops for families: a playground, pony and horseback rides, a gentle cable car, short eco-trail sections, wide lawns to run around on, and shaded cottages for a family picnic. Bring a light jacket (the ridge is cooler than Manila), cash in small bills, and arrive early on weekends to secure both a cottage and a parking slot.',
+  },
 ];
 
 export const faqJsonLd = {

@@ -1,7 +1,20 @@
+import { weatherAdviceHtml, weatherSummaryLine } from './weather-advice-view';
+import {
+  activitiesRowsHtml,
+  esc,
+  faqHtml,
+  feesCardsHtml,
+  parkingBulletsHtml,
+  parkingHeadline,
+  paymentTipsHtml,
+  quickInfoHtml,
+} from './sections-html';
 import {
   setLanguage,
   applyLanguage,
   getInitialLanguage,
+  getStoredLanguage,
+  DEFAULT_LANGUAGE,
   SUPPORTED_LANGUAGES,
   type LanguageCode,
 } from './i18n';
@@ -14,6 +27,15 @@ declare global {
     __TPG_ITIN_SAVE__?: (s: Set<string>) => void;
     __TPG_MAPS_URL__?: string;
     __TPG_HERO_URL__?: string;
+    __TPG_ENTITY__?: { plusCode?: string; latitude?: number; longitude?: number };
+    __TPG_WEATHER__?: {
+      current?: Record<string, any>;
+      daily?: Array<Record<string, any>>;
+      updatedAt?: string;
+      source?: string;
+    };
+    __TPG_WEATHER_URL__?: string;
+    __TPG_RENDER_WEATHER__?: () => void;
   }
 }
 
@@ -25,11 +47,7 @@ function getUI(lang: LanguageCode) {
   return window.__TRANSLATIONS__?.[lang]?.ui || {};
 }
 
-function esc(s: string): string {
-  const div = document.createElement('div');
-  div.textContent = s;
-  return div.innerHTML;
-}
+/** 转义函数与服务端渲染共用（见 sections-html.ts），保证两端标记一致 */
 
 function renderFeatureCards(lang: LanguageCode) {
   const ui = getUI(lang);
@@ -53,80 +71,36 @@ function renderQuickInfo(lang: LanguageCode) {
   const data = getData(lang);
   const container = document.getElementById('quickinfo-list');
   if (!container) return;
-  const attraction = data.attraction || {};
-  const fees = data.fees || {};
-  const items = [
-    { dt: ui.overview?.quickInfo?.address || 'Address', dd: `${attraction.address?.streetAddress || ''}, ${attraction.address?.addressLocality || ''}, ${attraction.address?.addressRegion || ''} 4120` },
-    { dt: ui.overview?.quickInfo?.hours || 'Hours', dd: `${attraction.openingHours?.weekday || ''} · 07:00–20:00` },
-    { dt: ui.overview?.quickInfo?.entrance || 'Entrance', dd: `${fees.entrance?.label || ''}: PHP 50 – 75` },
-    { dt: ui.overview?.quickInfo?.coordinates || 'Coordinates', dd: '14.1247161, 120.9977949' },
-    { dt: ui.overview?.quickInfo?.operator || 'Operator', dd: 'Tagaytay City Government · Tagaytay City Tourism' },
-  ];
-  container.innerHTML = items.map((i) => `
-    <div>
-      <dt class="text-muted">${esc(i.dt)}</dt>
-      <dd class="mt-0.5 font-medium text-charcoal">${esc(i.dd)}</dd>
-    </div>`).join('');
+  container.innerHTML = quickInfoHtml(ui, data, window.__TPG_ENTITY__ || {});
 }
 
 function renderFeesCards(lang: LanguageCode) {
   const data = getData(lang);
   const container = document.getElementById('fees-cards');
   if (!container) return;
-  const entrance = data.fees?.entrance || { label: '', note: '' };
-  const cottages = data.fees?.cottages || { label: '', note: '' };
-  container.innerHTML = `
-    <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-      <h3 class="font-semibold text-forest-800">${esc(entrance.label || '')}</h3>
-      <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">PHP 50 – 75</div>
-      <p class="mt-3 text-sm text-muted">${esc(entrance.note || '')}</p>
-    </div>
-    <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
-      <h3 class="font-semibold text-forest-800">${esc(cottages.label || '')}</h3>
-      <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">PHP 100 – 500</div>
-      <p class="mt-3 text-sm text-muted">${esc(cottages.note || '')}</p>
-    </div>`;
+  container.innerHTML = feesCardsHtml(data);
 }
 
 function renderActivitiesTable(lang: LanguageCode) {
   const data = getData(lang);
   const tbody = document.getElementById('activities-table');
   if (!tbody) return;
-  const acts = data.fees?.activities || [];
-  const ranges = ['PHP 200 – 300', lang === 'fil' ? 'Nag-iiba' : 'Varies', 'PHP 150 – 250', lang === 'fil' ? 'Kasama' : 'Included'];
-  tbody.innerHTML = acts.map((a: any, i: number) => `
-    <tr class="${i % 2 ? 'bg-forest-50/40 border-t border-forest-100' : 'border-t border-forest-100'}">
-      <td class="px-5 py-4 font-medium text-charcoal">${esc(a.label || '')}</td>
-      <td class="px-5 py-4 font-semibold text-sunset-700">${esc(ranges[i] || '')}</td>
-      <td class="px-5 py-4 text-muted">${esc(a.note || '')}</td>
-    </tr>`).join('');
+  tbody.innerHTML = activitiesRowsHtml(data, lang);
 }
 
 function renderPaymentTips(lang: LanguageCode) {
   const data = getData(lang);
   const container = document.getElementById('payment-tips');
   if (!container) return;
-  const payment = data.fees?.payment || { label: '', bullets: [] };
-  container.innerHTML = `
-    <h3 class="font-semibold text-lake-900">${esc(payment.label || '')}</h3>
-    <ul class="mt-3 list-inside list-disc space-y-1.5 text-sm text-lake-900/90">
-      ${(payment.bullets || []).map((b: string) => `<li>${esc(b)}</li>`).join('')}
-    </ul>`;
+  container.innerHTML = paymentTipsHtml(data);
 }
 
 function renderParking(lang: LanguageCode) {
   const data = getData(lang);
   const headline = document.getElementById('parking-headline');
   const bullets = document.getElementById('parking-bullets');
-  const parking = data.transport?.parking || { headline: '', bullets: [] };
-  if (headline) headline.textContent = parking.headline || '';
-  if (bullets) {
-    bullets.innerHTML = (parking.bullets || []).map((b: string) => `
-      <li class="flex gap-3 rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
-        <span class="mt-1 flex h-6 w-6 flex-none items-center justify-center rounded-full bg-forest-100 text-sm font-bold text-forest-700">✓</span>
-        <span class="text-sm text-charcoal">${esc(b)}</span>
-      </li>`).join('');
-  }
+  if (headline) headline.textContent = parkingHeadline(data);
+  if (bullets) bullets.innerHTML = parkingBulletsHtml(data);
 }
 
 function renderBestTime(lang: LanguageCode) {
@@ -285,15 +259,331 @@ function renderFAQ(lang: LanguageCode) {
   const data = getData(lang);
   const container = document.getElementById('faq-items');
   if (!container) return;
-  const faq = data.faq || [];
-  container.innerHTML = faq.map((f: any) => `
-    <details class="group rounded-2xl border border-forest-100 bg-white p-5 shadow-sm open:border-sunset-200 open:bg-sunset-50/40">
-      <summary class="flex items-start justify-between gap-4">
-        <span class="font-semibold text-charcoal">${esc(f.question || '')}</span>
-        <span class="flex-none flex h-7 w-7 items-center justify-center rounded-full bg-forest-100 text-lg font-bold text-forest-700 transition group-open:rotate-45 group-open:bg-sunset-100 group-open:text-sunset-700">+</span>
-      </summary>
-      <p class="mt-3 text-sm leading-relaxed text-muted">${esc(f.answer || '')}</p>
-    </details>`).join('');
+  container.innerHTML = faqHtml(data);
+}
+
+function renderReviews(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const reviews = data.reviews || {};
+  const author = ui.reviews?.authorLabel || '';
+
+  const card = (r: any) => `
+    <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+      <h4 class="font-semibold text-forest-800">${esc(r?.title || '')}</h4>
+      <p class="mt-2 text-sm text-muted">${esc(r?.text || '')}</p>
+      ${author ? `<p class="mt-3 text-xs text-muted/80">${esc(author)}</p>` : ''}
+    </article>`;
+
+  const positive = document.getElementById('reviews-positive');
+  if (positive) positive.innerHTML = (reviews.positive || []).map(card).join('');
+
+  const critical = document.getElementById('reviews-critical');
+  if (critical) critical.innerHTML = (reviews.critical || []).map(card).join('');
+}
+
+function renderHistory(lang: LanguageCode) {
+  const data = getData(lang);
+  const h = data.history || {};
+
+  const paragraphs = document.getElementById('history-paragraphs');
+  if (paragraphs) {
+    paragraphs.innerHTML = (h.paragraphs || [])
+      .map((p: string) => `<p>${esc(p)}</p>`)
+      .join('');
+  }
+
+  const milestones = document.getElementById('history-milestones');
+  if (milestones) {
+    milestones.innerHTML = (h.milestones || [])
+      .map(
+        (m: any) => `
+      <li class="flex flex-col gap-1 rounded-2xl border border-forest-100 bg-white p-5 shadow-sm sm:flex-row sm:gap-5">
+        <span class="flex-none font-semibold text-sunset-700 sm:w-24">${esc(m?.year || '')}</span>
+        <span class="text-sm text-charcoal">${esc(m?.text || '')}</span>
+      </li>`
+      )
+      .join('');
+  }
+}
+
+function renderSources(lang: LanguageCode) {
+  const data = getData(lang);
+  const list = document.getElementById('sources-list');
+  if (!list) return;
+  const items = data.sources || [];
+  list.innerHTML = items
+    .map(
+      (s: any) => `
+    <li class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+      <a href="${esc(s?.url || '#')}" target="_blank" rel="noopener noreferrer" class="font-semibold text-forest-700 underline hover:text-forest-800">${esc(s?.name || '')}</a>
+      <p class="mt-1 text-sm text-muted">${esc(s?.note || '')}</p>
+      <p class="mt-1 break-all text-xs text-muted/80">${esc(s?.url || '')}</p>
+    </li>`
+    )
+    .join('');
+}
+
+function codeInfo(data: any, code: any) {
+  const map = data.weatherCodes || {};
+  return map[String(code)] || { label: '', icon: '⛅' };
+}
+
+function weatherRow(dt: string, dd: string) {
+  return `<div><dt class="text-muted">${esc(dt)}</dt><dd class="font-semibold text-charcoal">${esc(dd)}</dd></div>`;
+}
+
+function renderWeather(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const w = window.__TPG_WEATHER__;
+  if (!w) return;
+  const t = ui.weather || {};
+  const c = w.current || {};
+  const days = w.daily || [];
+  const today = days[0] || {};
+  const icon0 = codeInfo(data, c.weatherCode);
+
+  const cur = document.getElementById('weather-current');
+  if (cur) {
+    cur.innerHTML = `
+      <div class="rounded-2xl bg-forest-50 p-6 ring-1 ring-forest-100">
+        <div class="flex items-center gap-4">
+          <span class="text-4xl">${esc(icon0.icon)}</span>
+          <div>
+            <div class="font-serif text-3xl font-bold text-forest-800">${Math.round(Number(c.temperature ?? 0))}°C</div>
+            <div class="text-sm text-muted">${esc(icon0.label)}</div>
+          </div>
+        </div>
+        <dl class="mt-4 grid grid-cols-2 gap-3 text-sm">
+          ${weatherRow(t.feelsLike || 'Feels like', `${Math.round(Number(c.apparentTemperature ?? 0))}°C`)}
+          ${weatherRow(t.humidity || 'Humidity', `${c.humidity ?? '-'}%`)}
+          ${weatherRow(t.wind || 'Wind', `${c.windSpeed ?? '-'} km/h`)}
+          ${weatherRow(t.gust || 'Gusts', `${c.windGust ?? '-'} km/h`)}
+          ${weatherRow(t.rain || 'Rain', `${c.precipitation ?? 0} mm`)}
+          ${weatherRow(t.rainChance || 'Rain chance', `${today.precipitationProbability ?? 0}%`)}
+        </dl>
+      </div>
+      <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100 lg:col-span-2">
+        <p class="text-sm font-medium text-charcoal">${esc(weatherSummaryLine(w, t, data.weatherCodes || {}))}</p>
+        <p class="mt-2 font-semibold text-forest-800">${esc(
+          (Number(today.precipitationProbability ?? 0) >= 60 ? t.umbrellaYes : t.umbrellaNo) || ''
+        )}</p>
+        <dl class="mt-4 grid grid-cols-2 gap-3 text-sm sm:grid-cols-4">
+          ${weatherRow(t.sunrise || 'Sunrise', String(today.sunrise || '-'))}
+          ${weatherRow(t.sunset || 'Sunset', String(today.sunset || '-'))}
+          ${weatherRow(t.uv || 'UV index', String(today.uvIndexMax ?? '-'))}
+          ${weatherRow(t.updated || 'Updated', esc(w.updatedAt ? new Date(w.updatedAt).toLocaleString([lang === 'fil' ? 'fil-PH' : 'en-PH']) : '-'))}
+        </dl>
+        <p class="mt-4 text-sm text-muted">${esc(t.note || '')}</p>
+      </div>`;
+  }
+
+  const fc = document.getElementById('weather-forecast');
+  if (fc) {
+    fc.innerHTML = days
+      .map((d: any) => {
+        const info = codeInfo(data, d.weatherCode);
+        return `
+      <div class="rounded-2xl border border-forest-100 bg-white p-4 text-center shadow-sm">
+        <div class="text-xs font-semibold text-forest-800">${esc(d.weekday || '')}</div>
+        <div class="mt-1 text-xs text-muted">${esc(String(d.date || '').slice(5))}</div>
+        <div class="mt-2 text-2xl">${esc(info.icon)}</div>
+        <div class="mt-2 font-semibold text-charcoal">${Math.round(Number(d.tempMax ?? 0))}° / ${Math.round(Number(d.tempMin ?? 0))}°</div>
+        <div class="mt-1 text-xs text-muted">💧 ${d.precipitationProbability ?? 0}%</div>
+        <div class="text-xs text-muted">${esc(String(d.precipitation ?? 0))} mm</div>
+      </div>`;
+      })
+      .join('');
+  }
+
+  const advice = document.getElementById('weather-advice');
+  if (advice) {
+    advice.innerHTML = weatherAdviceHtml(w, t, data.weatherAdvice || {});
+  }
+}
+
+function renderSeasonStrategy(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const container = document.getElementById('season-strategy-rows');
+  if (!container) return;
+  const rows = data.seasonStrategy || [];
+  const t = ui.seasonStrategy || {};
+  container.innerHTML = rows
+    .map(
+      (r: any) => `
+    <tr class="border-t border-forest-100 align-top">
+      <th scope="row" class="px-4 py-4 text-left">
+        <span class="font-semibold text-forest-800">${esc(r.season || '')}</span>
+        <span class="mt-1 block text-xs font-normal text-muted">${esc(r.months || '')}</span>
+      </th>
+      <td class="px-4 py-4">${esc(r.weather || '')}</td>
+      <td class="px-4 py-4">${esc(r.volcano || '')}</td>
+      <td class="px-4 py-4">${esc(r.nature || '')}</td>
+      <td class="px-4 py-4">${esc(r.advice || '')}</td>
+    </tr>`
+    )
+    .join('');
+
+  const head = document.getElementById('season-strategy-head');
+  if (head) {
+    head.innerHTML = `<tr>
+      <th scope="col" class="px-4 py-3 text-left">${esc(t.colSeason || '')}</th>
+      <th scope="col" class="px-4 py-3 text-left">${esc(t.colWeather || '')}</th>
+      <th scope="col" class="px-4 py-3 text-left">${esc(t.colVolcano || '')}</th>
+      <th scope="col" class="px-4 py-3 text-left">${esc(t.colNature || '')}</th>
+      <th scope="col" class="px-4 py-3 text-left">${esc(t.colAdvice || '')}</th>
+    </tr>`;
+  }
+}
+
+function renderServices(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const container = document.getElementById('services-cards');
+  if (!container) return;
+  const t = ui.services || {};
+  container.innerHTML = (data.services || [])
+    .map(
+      (s: any) => `
+    <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+      <h3 class="flex items-center gap-2 font-semibold text-forest-800"><span aria-hidden="true">${esc(s.icon || '')}</span>${esc(s.type || '')}</h3>
+      <p class="mt-2 text-sm text-muted">${esc(s.what || '')}</p>
+      <dl class="mt-3 space-y-2 text-sm">
+        <div><dt class="font-semibold text-forest-700">${esc(t.whereLabel || '')}</dt><dd class="text-muted">${esc(s.where || '')}</dd></div>
+        <div><dt class="font-semibold text-forest-700">${esc(t.tipsLabel || '')}</dt><dd class="text-muted">${esc(s.tips || '')}</dd></div>
+      </dl>
+    </article>`
+    )
+    .join('');
+}
+
+function renderRoutes(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const t = ui.routes || {};
+
+  const audience = document.getElementById('audience-routes');
+  if (audience) {
+    audience.innerHTML = (data.audienceRoutes || [])
+      .map(
+        (r: any) => `
+      <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+        <h3 class="flex items-center gap-2 font-semibold text-forest-800"><span aria-hidden="true">${esc(r.icon || '')}</span>${esc(r.audience || '')}</h3>
+        <p class="mt-2 text-sm text-muted">${esc(r.summary || '')}</p>
+        <p class="mt-2 text-xs font-semibold text-forest-700">${esc(t.paceLabel || '')}: ${esc(r.pace || '')}</p>
+        <h4 class="mt-3 text-sm font-semibold text-forest-800">${esc(t.stopsLabel || '')}</h4>
+        <ol class="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted">
+          ${(r.stops || []).map((s: string) => `<li>${esc(s)}</li>`).join('')}
+        </ol>
+        <h4 class="mt-3 text-sm font-semibold text-forest-800">${esc(t.tipsLabel || '')}</h4>
+        <ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-muted">
+          ${(r.tips || []).map((s: string) => `<li>${esc(s)}</li>`).join('')}
+        </ul>
+      </article>`
+      )
+      .join('');
+  }
+
+  const suggested = document.getElementById('suggested-routes');
+  if (suggested) {
+    suggested.innerHTML = (data.suggestedRoutes || [])
+      .map(
+        (r: any) => `
+      <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+        <div class="flex flex-wrap items-baseline justify-between gap-2">
+          <h3 class="font-semibold text-forest-800">${esc(r.name || '')}</h3>
+          <span class="rounded-full bg-forest-50 px-3 py-1 text-xs font-semibold text-forest-700">${esc(t.durationLabel || '')}: ${esc(r.duration || '')}</span>
+        </div>
+        <p class="mt-2 text-sm text-muted">${esc(r.summary || '')}</p>
+        <ol class="mt-3 list-decimal space-y-1 pl-5 text-sm text-muted">
+          ${(r.steps || []).map((s: string) => `<li>${esc(s)}</li>`).join('')}
+        </ol>
+      </article>`
+      )
+      .join('');
+  }
+}
+
+function renderScience(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const t = ui.science || {};
+  const s = data.science || {};
+  const blocks: Array<[string, string, string[]]> = [
+    ['science-geology', t.geologyTitle, s.geology],
+    ['science-volcano', t.volcanoTitle, s.volcano],
+    ['science-ecology', t.ecologyTitle, s.ecology],
+    ['science-responsibility', t.responsibilityTitle, s.responsibility],
+  ];
+  blocks.forEach(([id, title, items]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = `
+      <h3 class="font-semibold text-forest-800">${esc(title || '')}</h3>
+      <ul class="mt-3 list-disc space-y-2 pl-5 text-muted">
+        ${(items || []).map((i: string) => `<li>${esc(i)}</li>`).join('')}
+      </ul>`;
+  });
+}
+
+function renderLegends(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const container = document.getElementById('legends-list');
+  if (!container) return;
+  const note = ui.legends?.note || '';
+  container.innerHTML = (data.legends || [])
+    .map(
+      (l: any) => `
+    <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+      <div class="flex flex-wrap items-center gap-2">
+        <h3 class="font-semibold text-forest-800">${esc(l.title || '')}</h3>
+        <span class="rounded-full bg-forest-50 px-3 py-1 text-xs font-semibold text-forest-700">${esc(l.kind || '')}</span>
+      </div>
+      <p class="mt-2 text-sm text-muted">${esc(l.text || '')}</p>
+    </article>`
+    )
+    .join('');
+  const noteEl = document.getElementById('legends-note');
+  if (noteEl) noteEl.textContent = note;
+}
+
+function renderTransportGuide(lang: LanguageCode) {
+  const ui = getUI(lang);
+  const data = getData(lang);
+  const t = ui.transportGuide || {};
+  const guide = data.transportGuide || {};
+
+  const routesEl = document.getElementById('transport-guide-routes');
+  if (routesEl) {
+    routesEl.innerHTML = (guide.routes || [])
+      .map(
+        (r: any) => `
+      <article class="rounded-2xl border border-forest-100 bg-white p-5 shadow-sm">
+        <h3 class="flex items-center gap-2 font-semibold text-forest-800"><span aria-hidden="true">${esc(r.icon || '')}</span>${esc(r.mode || '')}</h3>
+        <p class="mt-1 text-xs font-semibold text-forest-700">${esc(r.from || '')}</p>
+        <h4 class="mt-3 text-sm font-semibold text-forest-800">${esc(t.stepsLabel || '')}</h4>
+        <ol class="mt-2 list-decimal space-y-1 pl-5 text-sm text-muted">
+          ${(r.steps || []).map((s: string) => `<li>${esc(s)}</li>`).join('')}
+        </ol>
+        <dl class="mt-3 grid gap-2 text-sm sm:grid-cols-2">
+          <div><dt class="font-semibold text-forest-700">${esc(t.timeLabel || '')}</dt><dd class="text-muted">${esc(r.time || '')}</dd></div>
+          <div><dt class="font-semibold text-forest-700">${esc(t.costLabel || '')}</dt><dd class="text-muted">${esc(r.cost || '')}</dd></div>
+        </dl>
+        <p class="mt-3 text-sm text-muted"><span class="font-semibold text-forest-700">${esc(t.notesLabel || '')}:</span> ${esc(r.notes || '')}</p>
+      </article>`
+      )
+      .join('');
+  }
+
+  const tipsEl = document.getElementById('transport-guide-tips');
+  if (tipsEl) {
+    tipsEl.innerHTML = (guide.tips || [])
+      .map((s: string) => `<li>${esc(s)}</li>`)
+      .join('');
+  }
 }
 
 function renderItinerary(lang: LanguageCode) {
@@ -447,6 +737,16 @@ function renderAll(lang: LanguageCode) {
   renderFood(lang);
   renderNearby(lang);
   renderFAQ(lang);
+  renderReviews(lang);
+  renderHistory(lang);
+  renderSources(lang);
+  renderWeather(lang);
+  renderSeasonStrategy(lang);
+  renderTransportGuide(lang);
+  renderServices(lang);
+  renderRoutes(lang);
+  renderScience(lang);
+  renderLegends(lang);
   renderItinerary(lang);
   renderGallery(lang);
 }
@@ -456,4 +756,8 @@ document.addEventListener('DOMContentLoaded', () => {
   applyLanguage(initial);
   bindLanguageSwitcher(initial);
   renderAll(initial);
+
+  window.__TPG_RENDER_WEATHER__ = () => {
+    renderWeather(getStoredLanguage() || DEFAULT_LANGUAGE);
+  };
 });
