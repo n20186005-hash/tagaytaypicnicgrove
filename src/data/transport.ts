@@ -43,7 +43,7 @@ export const transport: TransportInfo = {
       'Primary route: South Luzon Expressway (SLEX) southbound → exit at Santa Rosa → take Santa Rosa–Tagaytay Road uphill to Tagaytay → at Olivarez Rotunda, turn left onto Tagaytay–Calamba Road → continue east 4–5 km. Picnic Grove is on the right-hand side.',
       'Alternative route (heavier in some hours): SLEX → Carmona exit → Governor\u2019s Drive → turn onto Aguinaldo Highway → Silang → Tagaytay Rotunda.',
       'Drive time: 1.5–2 hours with light traffic. Weekends and Philippine long weekends regularly stretch to 2.5–3.5+ hours due to congestion on SLEX and the uphill Santa Rosa–Tagaytay Road.',
-      'Arrive 7:00–8:00 AM on weekends and holidays to beat the queues and guarantee parking inside the lot.',
+      'Arrive 8:00–9:00 AM on weekends and holidays to beat the queues and look for parking inside the lot.',
     ],
   },
   commute: {
@@ -71,7 +71,7 @@ export const transport: TransportInfo = {
     bullets: [
       'Dedicated paved parking lot right beside the main gate; walk 1–3 minutes to the ticket booth.',
       'Flat-rate fee per entry for cars, SUVs, and vans; buses have a separate, higher rate; motorcycles have a dedicated motorcycle parking area.',
-      'On weekends and holidays the lot fills fast (often by 10:00 AM). Arrive 7:00–8:00 AM to secure a spot.',
+      'On weekends and holidays the lot fills fast (often by 10:00 AM). Arrive 8:00–9:00 AM to secure a spot.',
       'If the on-site lot is full: local residents sometimes offer informal roadside parking along Tagaytay–Calamba Road. Confirm the price clearly before entering and be aware these spots are not managed by the city government.',
       'People\u2019s Park in the Sky has its own parking lot about 2–3 km west; walking between the two parks is possible (≈2 km) but not recommended because the narrow roadside has no sidewalk.',
     ],

@@ -14,9 +14,9 @@ export const siteConfig = {
   name: 'Tagaytay Picnic Grove',
   // TDK：核心关键词（Entrance Fee / Opening Hours / Parking / Activities）前置，
   // 直接对应用户在 GSC 中最多的高意图查询，用于提升 SERP 点击率。
-  title: 'Tagaytay Picnic Grove: Entrance Fee, Opening Hours, Parking & Activities (2026)',
+  title: 'Tagaytay Picnic Grove: Entrance Fee, Hours & Cottage Rates',
   description:
-    'Updated guide to Tagaytay Picnic Grove in Tagaytay City, Cavite: entrance fee, opening hours, parking rates, zipline, horseback riding, eco-trail and family activities — with map, weather and tips.',
+    'Tagaytay Picnic Grove entrance fee and cottage rates with government sources, weekday and weekend opening hours, parking, activities and directions in Cavite.',
   url: SITE_URL,
   lang: 'en',
   locale: 'en_PH',
@@ -46,7 +46,7 @@ export const entity = {
   plusCode: '4XFX+V4 Tagaytay, Cavite',
   nearbyLandmark1: "People\u2019s Park in the Sky",
   nearbyLandmark2: 'Sky Ranch Tagaytay',
-  govtTourismUrl: 'https://tagaytaycity.ph/picnic-grove/',
+  govtTourismUrl: 'https://www.tagaytay.gov.ph/tourism.html',
   govtTourismLabel: 'Tagaytay City / Cavite Official Tourism Portal',
   phivolcsUrl: 'https://www.phivolcs.dost.gov.ph/',
 } as const;
@@ -59,17 +59,17 @@ export const entity = {
 export const googleReviews = {
   ratingValue: '4.4',
   ratingValueDisplay: '4.4',
-  reviewCount: '12586',
-  reviewCountDisplay: '12,586',
+  reviewCount: '12642',
+  reviewCountDisplay: '12,642',
   /** 同步时间（中文标注，与页面来源说明保持一致） */
-  syncedAt: '2026 年 9 月',
-  syncedAtEn: 'September 2026',
+  syncedAt: '2026-10-18',
+  syncedAtEn: '2026-10-18',
   sourceName: 'Google Maps',
   sourceUrl: mapsUrl,
   /** 页面展示用的来源说明（页面可见，不入 JSON-LD） */
-  attribution: '同步自 Google 地图用户评价，同步时间 2026 年 9 月；版权归原作者与 Google 地图所有',
+  attribution: 'Google Maps rating and review-count snapshot checked 2026-10-18; figures may change.',
   attributionShort:
-    '评分与评价数同步自谷歌地图（Google Maps）用户评价 · 2026 年 9 月 · 点击查看谷歌地图全部评价↗',
+    'Google Maps snapshot · checked 2026-10-18 · view current reviews ↗',
   viewAllLabel: '在谷歌地图查看全部评价',
 } as const;
 
@@ -83,7 +83,7 @@ export const attraction = {
   lng: 120.9977949,
   /** 与 googleReviews 保持一致；仅用于页面展示，不进 JSON-LD */
   ratingValue: '4.4',
-  reviewCount: '12586',
+  reviewCount: '12642',
   priceRange: '₱₱',
   isAccessibleForFree: false,
   address: {
@@ -94,9 +94,9 @@ export const attraction = {
     addressCountry: 'PH',
   },
   openingHours: {
-    weekday: 'Monday–Sunday',
-    opens: '07:00',
+    weekday: 'Mon–Fri 08:00–20:00 · Sat 09:00–21:00 · Sun 07:00–20:00',
+    opens: '08:00',
     closes: '20:00',
-    note: 'Hours may change; check Google Maps for latest.',
+    note: 'Google Maps lists Monday–Friday 8 AM–8 PM, Saturday 9 AM–9 PM, and Sunday 7 AM–8 PM (checked 2026-10-18). Holiday hours, activity counters and temporary closures can differ; confirm before travelling.',
   },
 };

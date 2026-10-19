@@ -29,8 +29,9 @@ export default {
     const url = new URL(request.url);
 
     // 1) HTTP → HTTPS 301（本地 wrangler dev 不重定向，避免调试不便）
-    if (url.protocol === 'http:' && !isLocalhost(url.hostname)) {
-      return Response.redirect(`https://${url.host}${url.pathname}${url.search}`, 301);
+    if ((url.protocol === 'http:' && !isLocalhost(url.hostname)) || url.hostname === 'www.tagaytaypicnicgrove.com') {
+      const host = url.hostname === 'www.tagaytaypicnicgrove.com' ? 'tagaytaypicnicgrove.com' : url.host;
+      return Response.redirect(`https://${host}${url.pathname}${url.search}`, 301);
     }
 
     const response = await env.ASSETS.fetch(request);

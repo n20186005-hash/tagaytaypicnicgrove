@@ -34,11 +34,11 @@ export function quickInfoHtml(ui: any, data: any, coords: CoordsInfo = {}): stri
     },
     {
       dt: ui?.overview?.quickInfo?.hours || 'Hours',
-      dd: `${attraction.openingHours?.weekday || ''} · ${attraction.openingHours?.opens || '07:00'}–${attraction.openingHours?.closes || '20:00'}`,
+      dd: `${attraction.openingHours?.weekday || ''}`,
     },
     {
       dt: ui?.overview?.quickInfo?.entrance || 'Entrance',
-      dd: `${fees.entrance?.label || ''}: PHP 50 – 75`,
+      dd: `${fees.entrance?.label || ''}: PHP 75 (2024)`,
     },
     {
       dt: ui?.overview?.quickInfo?.coordinates || 'Coordinates',
@@ -66,12 +66,12 @@ export function feesCardsHtml(data: any): string {
   return `
     <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
       <h3 class="font-semibold text-forest-800">${esc(entrance.label || '')}</h3>
-      <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">PHP 50 – 75</div>
+      <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">PHP 75 (2024)</div>
       <p class="mt-3 text-sm text-muted">${esc(entrance.note || '')}</p>
     </div>
     <div class="rounded-2xl bg-white p-6 shadow-sm ring-1 ring-forest-100">
       <h3 class="font-semibold text-forest-800">${esc(cottages.label || '')}</h3>
-      <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">PHP 100 – 500</div>
+      <div class="mt-2 font-serif text-3xl font-bold text-sunset-600">PHP 150 – 600 (2024)</div>
       <p class="mt-3 text-sm text-muted">${esc(cottages.note || '')}</p>
     </div>`;
 }

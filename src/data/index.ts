@@ -30,11 +30,11 @@ export function getLocalizedData(lang: LanguageCode = DEFAULT_LANGUAGE) {
     disclaimer: t.ui.fees.disclaimer,
     entrance: {
       ...data.fees.entrance,
-      range: 'PHP 50 – 75',
+      range: 'PHP 75 (2024)',
     },
     cottages: {
       ...data.fees.cottages,
-      range: 'PHP 100 – 500',
+      range: 'PHP 150 – 600 (2024)',
     },
     activities: [
       { label: data.fees.activities[0].label, range: 'PHP 200 – 300', note: data.fees.activities[0].note },

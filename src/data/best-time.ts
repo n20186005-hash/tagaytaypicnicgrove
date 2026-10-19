@@ -29,7 +29,7 @@ export const bestTime = {
     { day: 'Sunday & Philippine public holidays', rating: '★★ Avoid if possible', point: 'Expect large crowds, long entrance queues, very limited parking, and significant SLEX traffic going home. Highly experienced visitors often skip Sundays entirely.' },
   ],
   hourly: [
-    { window: '7:00 – 10:00 AM', rating: '★★★★★', point: 'Crisp cool air, soft side-light on Taal Volcano for photographs, and a nearly empty park.' },
+    { window: '8:00 – 10:00 AM', rating: '★★★★★', point: 'Crisp cool air, soft side-light on Taal Volcano for photographs, and a nearly empty park.' },
     { window: '10:00 AM – 3:00 PM', rating: '★★★', point: 'Bright overhead sun, strong UV, and the highest human noise. Good for picnics under shade; not ideal for landscape photos.' },
     { window: '3:30 – 5:30 PM', rating: '★★★★★', point: 'Golden-hour light for Taal-view photography, cooling wind, classic sunset atmosphere.' },
     { window: '5:30 – 8:00 PM', rating: '★★★', point: 'Dinner BBQs in cottages are lively; note that the park closes around 8:00 PM.' },

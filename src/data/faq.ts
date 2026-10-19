@@ -7,12 +7,12 @@ export const faqItems: FAQItem[] = [
   {
     question: 'What is the entrance fee for Tagaytay Picnic Grove?',
     answer:
-      'The park charges an entrance fee. Historical reference rates are around PHP 50–75 per person. Residents, senior citizens, and students may be eligible for discounts under Philippine law (RA 9994 / RA 10754). Please note that rates are subject to change without notice — always confirm the latest posted prices at the gate or via the Tagaytay City Tourism office or Google Maps.',
+      'The 2024 Tagaytay City Citizen Charter lists PHP 75 per guest. Confirm current prices and discount eligibility at the gate; parking, facilities and rides are separate.',
   },
   {
     question: 'What are the opening hours? Is it open every day?',
     answer:
-      'Tagaytay Picnic Grove generally opens daily from around 7:00 AM to 8:00 PM, including weekends and holidays. Hours may shift during bad weather, Taal Volcano alerts, or special events. Always verify the latest hours on Google Maps before departure.',
+      'Google Maps lists Monday–Friday 8 AM–8 PM, Saturday 9 AM–9 PM, and Sunday 7 AM–8 PM (checked 2026-10-18). Holiday hours, activity counters and temporary closures can differ; confirm before travelling.',
   },
   {
     question: 'Can I bring my own food and grill for a BBQ picnic?',
@@ -82,7 +82,7 @@ export const faqItems: FAQItem[] = [
   {
     question: 'What time does Picnic Grove close, and when is the last entry?',
     answer:
-      'The posted closing time is 8:00 PM (20:00) daily. Ticket sales and activity counters (zipline, cable car, horseback riding) usually wind down about 30–60 minutes before closing, and rides stop earlier in bad weather or low visibility. For activities, arrive no later than 5:00–6:00 PM; for a sunset picnic, arriving by 4:00–5:00 PM still leaves 2–3 comfortable hours.',
+      'Google Maps lists Monday–Friday 8 AM–8 PM, Saturday 9 AM–9 PM, and Sunday 7 AM–8 PM (checked 2026-10-18). Holiday hours, activity counters and temporary closures can differ; confirm before travelling. Last admission and ride cutoffs are not confirmed; ask the ticket office.',
   },
   {
     question: 'How much is the parking fee, and is parking free?',

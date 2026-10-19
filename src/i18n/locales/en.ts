@@ -62,8 +62,8 @@ export const en: FullTranslations = {
       disclaimer: 'Park hours, entrance fees, cottage availability and activities change without notice. Always double-check the latest posted prices and conditions on Google Maps reviews or the Tagaytay City Tourism socials before you travel.',
     },
     fees: {
-      title: 'Tickets, & Activities',
-      disclaimer: 'The figures below are historical reference ranges gathered from multiple public sources. Actual rates change without notice; always confirm the latest posted prices at the gate or via Tagaytay City Tourism.',
+      title: 'Entrance Fee, Cottage Rental & Activities',
+      disclaimer: 'The entrance fee and facility range below follow the 2024 City Citizen Charter, checked 2026-10-18. Confirm current prices at the gate; activity prices remain historical estimates.',
       activities: {
         title: 'Activities',
         activity: 'Activity',
@@ -251,19 +251,19 @@ export const en: FullTranslations = {
     },
     faq: {
       title: 'FAQ',
-      subtitle: 'Common questions answered by other visitors.',
+      subtitle: 'Practical answers with source dates and details to confirm before travel.',
     },
     reviews: {
       title: 'Visitor Reviews & Ratings for Tagaytay Picnic Grove',
       subtitle:
-        'Summary of what Google Maps reviewers highlight about this park — the good and the honest caveats — with the source and sync date stated below.',
-      fromGoogle: '评价来自谷歌地图用户评价 点击查看谷歌地图全部评价：',
+        'A dated snapshot of the public Google Maps rating and review count. Read individual visitor experiences at the source.',
+      fromGoogle: 'Source: Google Maps. Read visitor reviews:',
       ratingLabel: 'Google rating',
       countLabel: 'Google reviews',
-      viewAll: '在谷歌地图查看全部评价',
-      sourceNote: '同步自 Google 地图用户评价，同步时间 2026 年 9 月；版权归原作者与 Google 地图所有',
+      viewAll: 'Read reviews on Google Maps',
+      sourceNote: 'Google Maps rating and review-count snapshot checked 2026-10-18; figures may change.',
       syncLine:
-        '评分与评价数同步自谷歌地图（Google Maps）用户评价 · 2026 年 9 月 · 点击查看谷歌地图全部评价↗',
+        'Google Maps snapshot · checked 2026-10-18 · view current reviews ↗',
       authorLabel: 'Google Maps user reviews (summarised)',
       positiveLabel: 'What visitors praise',
       criticalLabel: 'What visitors caution about',
@@ -278,8 +278,8 @@ export const en: FullTranslations = {
       title: 'Sources & References',
       subtitle:
         'This guide is independent and non-official. Everything here is compiled from the public sources below — please verify time-sensitive details with the official channels before you travel.',
-      reviewsEntry: '评价 · 同步时间 2026 年 9 月',
-      reviewsNote: '同步自 Google 地图用户评价，同步时间 2026 年 9 月；版权归原作者与 Google 地图所有',
+      reviewsEntry: 'Maps snapshot · checked 2026-10-18',
+      reviewsNote: 'Google Maps rating and review-count snapshot checked 2026-10-18; figures may change.',
       outboundTitle: 'Official & authoritative links',
       outboundLead:
         'For official updates and regional tourism information, visit the Tagaytay City / Cavite official tourism portal and the PHIVOLCS volcano bulletin.',
@@ -323,8 +323,8 @@ export const en: FullTranslations = {
       description: 'A scenic hilltop park on Tagaytay Ridge with panoramic views of Taal Lake and Taal Volcano, featuring picnic cottages, zipline, cable car, horseback riding, and eco-trails.',
       area: 'Approximately 13.5 hectares of rolling terrain',
       openingHours: {
-        weekday: 'Monday–Sunday',
-        note: 'Hours may change; check Google Maps for latest.',
+        weekday: 'Mon–Fri 08:00–20:00 · Sat 09:00–21:00 · Sun 07:00–20:00',
+        note: 'Google Maps schedule checked 2026-10-18; confirm temporary changes.',
       },
       address: {
         streetAddress: 'Tagaytay-Calamba Road, Barangay Sungay South',
@@ -357,7 +357,7 @@ export const en: FullTranslations = {
         'bbq-picnic': 'DIY BBQ picnic — the heart of the Tagaytay family tradition.',
         'golden-hour': 'Golden Hour at the overlook — the park\u2019s most photogenic moment.',
         'kids-playground': 'Kids\u2019 playground — open space for the little ones to run.',
-        'misty-morning': 'Early mist over the ridge — arrive at 7:00 AM for the quietest hours.',
+        'misty-morning': 'Early mist over the ridge — check the day-specific opening time before an early visit.',
         'sunset-terrace': 'Sunset viewing terrace — wind, cool air, amber sky.',
         'park-entrance': 'Park entrance — tickets in hand, ridge walk begins.',
       },
@@ -365,11 +365,11 @@ export const en: FullTranslations = {
     faq: [
       {
         question: 'What is the entrance fee for Tagaytay Picnic Grove?',
-        answer: 'The park charges an entrance fee. Historical reference rates are around PHP 50–75 per person. Residents, senior citizens, and students may be eligible for discounts under Philippine law (RA 9994 / RA 10754). Please note that rates are subject to change without notice — always confirm the latest posted prices at the gate or via the Tagaytay City Tourism office or Google Maps.',
+        answer: 'The 2024 Tagaytay City Citizen Charter lists PHP 75 per guest. Confirm the current gate price and discount eligibility on arrival; parking, cottages and rides are charged separately.',
       },
       {
         question: 'What are the opening hours? Is it open every day?',
-        answer: 'Tagaytay Picnic Grove generally opens daily from around 7:00 AM to 8:00 PM, including weekends and holidays. Hours may shift during bad weather, Taal Volcano alerts, or special events. Always verify the latest hours on Google Maps before departure.',
+        answer: 'Google Maps lists Monday–Friday 8 AM–8 PM, Saturday 9 AM–9 PM, and Sunday 7 AM–8 PM (checked 2026-10-18). Holiday hours, activity counters and temporary closures can differ; confirm before travelling.',
       },
       {
         question: 'Can I bring my own food and grill for a BBQ picnic?',
@@ -425,7 +425,7 @@ export const en: FullTranslations = {
         },
         {
         question: 'What time does Picnic Grove close, and when is the last entry?',
-        answer: 'The posted closing time is 8:00 PM (20:00) daily. Ticket sales and activity counters (zipline, cable car, horseback riding) usually wind down about 30–60 minutes before closing, and rides stop earlier in bad weather or low visibility. For activities, arrive no later than 5:00–6:00 PM; for a sunset picnic, arriving by 4:00–5:00 PM still leaves 2–3 comfortable hours.',
+        answer: 'Google Maps lists Monday–Friday 8 AM–8 PM, Saturday 9 AM–9 PM, and Sunday 7 AM–8 PM (checked 2026-10-18). Holiday hours, activity counters and temporary closures can differ; confirm before travelling. Last admission and ride cutoffs are not confirmed; ask the ticket office.',
         },
         {
         question: 'How much is the parking fee, and is parking free?',
@@ -591,7 +591,7 @@ export const en: FullTranslations = {
         weather: '29–30 °C highs, 18–20 °C nights, 4–13 rain days. Haze builds in late afternoons and distant views flatten; UV index is at its yearly maximum around midday.',
         volcano: 'Usually clear in the morning, hazy in the afternoon. Heat shimmer softens long-distance photographs from about 13:00 onward.',
         nature: 'The driest months: grasses turn golden, butterflies and dragonflies are most active, and flowering trees attract sunbirds. Waterfalls and springs are at their lowest.',
-        advice: 'Visit 07:00–11:00, then rest in shade at midday and return for the 16:30–17:30 golden hour. Water and electrolytes matter more than an umbrella here.',
+        advice: 'Visit 08:00–11:00, then rest in shade at midday and return for the 16:30–17:30 golden hour. Water and electrolytes matter more than an umbrella here.',
       },
       {
         season: 'Southwest monsoon',
@@ -623,7 +623,7 @@ export const en: FullTranslations = {
         icon: '🅿️',
         what: 'A paved paid parking lot beside the main entrance, with separate areas for cars, vans, buses and motorcycles, plus a drop-off point for taxis and tricycles.',
         where: 'Directly at the main gate on Tagaytay–Calamba Road; walk 1–3 minutes to the ticket booth.',
-        tips: 'The lot can fill before 10:00 on weekends and holidays. Arrive 07:00–08:00, keep valuables out of sight, and note the flat-rate fee is charged per entry.',
+        tips: 'The lot can fill before 10:00 on weekends and holidays. Arrive 08:00–09:00, keep valuables out of sight, and note the flat-rate fee is charged per entry.',
       },
       {
         type: 'Food & drink (type-neutral)',
@@ -682,7 +682,7 @@ export const en: FullTranslations = {
         summary: 'A slow, shade-focused day built around one cottage, one gentle activity and plenty of food — not around ticking off viewpoints.',
         pace: 'Relaxed · 4–5 hours · frequent breaks',
         stops: [
-          'Arrive 08:00, pay entrance and parking, and rent a cottage near the main paths so you have a shaded base for the whole stay.',
+          'Arrive after the listed opening time for your day, pay entrance and parking, and rent a cottage near the main paths so you have a shaded base for the whole stay.',
           '09:00 – Taal viewpoint terraces while the air is cool and the light is soft; this is the classic family photo stop.',
           '10:00 – Playground / open lawn time while the crowd is still thin.',
           '11:00 – Horseback riding or the short cable car with an adult accompanying each child.',
@@ -702,8 +702,8 @@ export const en: FullTranslations = {
         summary: 'Two golden windows — early morning for clarity and late afternoon for light — with the hot middle of the day spent on detail, forest and bird work.',
         pace: 'Focused · 5–6 hours · early start',
         stops: [
-          'Arrive right at opening (around 07:00) when the air is clearest and the caldera is most likely to be free of low cloud.',
-          '07:00–09:00 – Taal Volcano panorama from the terraces; a short telephoto (70–200 mm class) compresses Volcano Island nicely, and a polariser helps cut haze.',
+          'Arrive at the listed opening time for your day when the air is clearest and the caldera is most likely to be free of low cloud.',
+          '08:00–09:00 – Taal Volcano panorama from the terraces; a short telephoto (70–200 mm class) compresses Volcano Island nicely, and a polariser helps cut haze.',
           '09:00–11:00 – Ridge-edge paths for birds, butterflies and pine-forest detail; a macro lens earns its weight here.',
           '11:00–14:00 – Rest and back up files; light is flat and harsh for landscape work.',
           '16:00–17:30 – Golden hour from the western viewpoints, then the sunset gradient over the lake.',
@@ -876,7 +876,7 @@ export const en: FullTranslations = {
           ],
           time: '1.5–2 hours with light traffic; 2.5–3.5+ hours on weekends and holidays',
           cost: 'Fuel plus tolls (roughly PHP 300–500 in tolls each way) plus parking fee',
-          notes: 'Arrive 07:00–08:00 to guarantee parking. Expect heavy congestion on Sundays and during Holy Week, Christmas week and long weekends.',
+          notes: 'Arrive 08:00–09:00 for a better chance of parking. Expect heavy congestion on Sundays and during Holy Week, Christmas week and long weekends.',
         },
         {
           mode: 'From Clark International Airport (CRK) or northern Luzon',
@@ -903,10 +903,11 @@ export const en: FullTranslations = {
       ],
     },
     sources: [
+      { name: 'Tagaytay City Citizen Charter (2024), pp. 184–189', url: 'https://tagaytay.gov.ph/pdf/CityGovernmentofTagaytay_CC_20240327.pdf', note: 'Entrance: PHP 75 per guest; facility-use rates: PHP 150, 250, 400 or 600. Checked 2026-10-18; confirm current rates at the gate.' },
       { name: 'PAGASA — climate normals & tropical cyclone bulletins', url: 'https://www.pagasa.dost.gov.ph/', note: 'Seasonal climate normals (1991–2020) and storm advisories referenced in the season strategy table.' },
       { name: 'Open-Meteo — point forecast for the park coordinates', url: 'https://open-meteo.com/', note: 'Current conditions and the 7-day forecast values shown on this page.' },
-      { name: 'Google Maps — Tagaytay Picnic Grove listing', url: 'https://maps.app.goo.gl/oM7D9qUjFvZbXdNj8', note: 'Coordinates, directions, opening status, photos and user reviews; rating and review count synced September 2026.' },
-      { name: 'Tagaytay City Official Portal (City Tourism)', url: 'https://tagaytaycity.ph/picnic-grove/', note: 'Official park page — activities and rate reference (some figures dated).' },
+      { name: 'Google Maps — Tagaytay Picnic Grove listing', url: 'https://maps.app.goo.gl/oM7D9qUjFvZbXdNj8', note: 'Coordinates, directions, opening status, photos and user reviews; rating and review count checked 2026-10-18.' },
+      { name: 'Tagaytay City Official Portal (City Tourism)', url: 'https://www.tagaytay.gov.ph/tourism.html', note: 'City government tourism information; current access announcements may change.' },
       { name: 'PHIVOLCS (Philippine Institute of Volcanology and Seismology)', url: 'https://www.phivolcs.dost.gov.ph/', note: 'Current Taal Volcano alert level and advisories.' },
       { name: 'Tagalog Wikipedia — Tagaytay Picnic Grove', url: 'https://tl.wikipedia.org/wiki/Tagaytay_Picnic_Grove', note: 'Location, operator and park type reference.' },
       { name: 'Islands Philippines — Tagaytay Picnic Grove', url: 'https://islandsphilippines.com/calabarzon/tagaytay/tagaytaypicnicgrove.php/history.php', note: 'Park area (13.5 hectares) and facility background.' },
@@ -917,7 +918,7 @@ export const en: FullTranslations = {
     fees: {
       entrance: {
         label: 'Entrance Fee (per person)',
-        note: 'Senior citizens and persons with disabilities (PWD) may receive the 20% discount mandated by Philippine law (RA 9994 / RA 10754). Students may also qualify — bring a valid ID.',
+        note: 'The 2024 Tagaytay City Citizen Charter lists PHP 75 per guest. Confirm the current gate price and discount eligibility on arrival; parking, cottages and rides are charged separately.',
       },
       cottages: {
         label: 'Picnic Cottage / Hut Rental',
@@ -969,7 +970,7 @@ export const en: FullTranslations = {
         { day: 'Sunday & Philippine public holidays', rating: '★★ Avoid if possible', point: 'Expect large crowds, long entrance queues, very limited parking, and significant SLEX traffic going home. Highly experienced visitors often skip Sundays entirely.' },
       ],
       hourly: [
-        { window: '7:00 – 10:00 AM', rating: '★★★★★', point: 'Crisp cool air, soft side-light on Taal Volcano for photographs, and a nearly empty park.' },
+        { window: '8:00 – 10:00 AM', rating: '★★★★★', point: 'Crisp cool air, soft side-light on Taal Volcano for photographs, and a nearly empty park.' },
         { window: '10:00 AM – 3:00 PM', rating: '★★★', point: 'Bright overhead sun, strong UV, and the highest human noise. Good for picnics under shade; not ideal for landscape photos.' },
         { window: '3:30 – 5:30 PM', rating: '★★★★★', point: 'Golden-hour light for Taal-view photography, cooling wind, classic sunset atmosphere.' },
         { window: '5:30 – 8:00 PM', rating: '★★★', point: 'Dinner BBQs in cottages are lively; note that the park closes around 8:00 PM.' },
@@ -1048,7 +1049,7 @@ export const en: FullTranslations = {
           'Primary route: South Luzon Expressway (SLEX) southbound → exit at Santa Rosa → take Santa Rosa–Tagaytay Road uphill to Tagaytay → at Olivarez Rotunda, turn left onto Tagaytay–Calamba Road → continue east 4–5 km. Picnic Grove is on the right-hand side.',
           'Alternative route (heavier in some hours): SLEX → Carmona exit → Governor\u2019s Drive → turn onto Aguinaldo Highway → Silang → Tagaytay Rotunda.',
           'Drive time: 1.5–2 hours with light traffic. Weekends and Philippine long weekends regularly stretch to 2.5–3.5+ hours due to congestion on SLEX and the uphill Santa Rosa–Tagaytay Road.',
-          'Arrive 7:00–8:00 AM on weekends and holidays to beat the queues and guarantee parking inside the lot.',
+          'Arrive 8:00–9:00 AM on weekends and holidays to beat the queues and look for parking inside the lot.',
         ],
       },
       commute: {
@@ -1076,7 +1077,7 @@ export const en: FullTranslations = {
         bullets: [
           'Dedicated paved parking lot right beside the main gate; walk 1–3 minutes to the ticket booth.',
           'Flat-rate fee per entry for cars, SUVs, and vans; buses have a separate, higher rate; motorcycles have a dedicated motorcycle parking area.',
-          'On weekends and holidays the lot fills fast (often by 10:00 AM). Arrive 7:00–8:00 AM to secure a spot.',
+          'On weekends and holidays the lot fills fast (often by 10:00 AM). Arrive 8:00–9:00 AM to secure a spot.',
           'If the on-site lot is full: local residents sometimes offer informal roadside parking along Tagaytay–Calamba Road. Confirm the price clearly before entering and be aware these spots are not managed by the city government.',
           'People\u2019s Park in the Sky has its own parking lot about 2–3 km west; walking between the two parks is possible (≈2 km) but not recommended because the narrow roadside has no sidewalk.',
         ],

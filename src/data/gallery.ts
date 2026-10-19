@@ -68,7 +68,7 @@ export const gallery: GalleryImage[] = [
     id: 'misty-morning',
     src: localImg('tagaytay-picnic-grove-10.jpg'),
     alt: 'Misty morning over Tagaytay Ridge',
-    caption: 'Early mist over the ridge — arrive at 7:00 AM for the quietest hours.',
+    caption: 'Early mist over the ridge — arrive at 8:00 AM for the quietest hours.',
   },
   {
     id: 'sunset-terrace',

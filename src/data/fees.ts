@@ -3,13 +3,13 @@ export const feesAndTickets = {
     'The figures below are historical reference ranges gathered from multiple public sources. Actual rates change without notice; always confirm the latest posted prices at the gate or via Tagaytay City Tourism.',
   entrance: {
     label: 'Entrance Fee (per person)',
-    range: 'PHP 50 – 75',
+    range: 'PHP 75',
     note:
-      'Senior citizens and persons with disabilities (PWD) may receive the 20% discount mandated by Philippine law (RA 9994 / RA 10754). Students may also qualify — bring a valid ID.',
+      'The 2024 Tagaytay City Citizen Charter lists PHP 75 per guest. Confirm the current gate price and discount eligibility on arrival; parking, cottages and rides are charged separately.',
   },
   cottages: {
     label: 'Picnic Cottage / Hut Rental',
-    range: 'PHP 100 – 500',
+    range: 'PHP 150 – 600',
     note:
       'Depends on size and location. Small nipa huts for 4–6 people are on the lower end; larger, covered, or view-deck cottages command higher rates. First come, first served — no public advance booking.',
   },

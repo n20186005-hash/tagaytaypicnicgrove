@@ -251,19 +251,19 @@ export const fil: FullTranslations = {
     },
     faq: {
       title: 'FAQ',
-      subtitle: 'Mga karaniwang tanong na sinagot ng ibang bumibisita.',
+      subtitle: 'Mga sagot para sa pagbisita; kumpirmahin ang mga detalyeng maaaring magbago.',
     },
     reviews: {
       title: 'Mga Review at Rating ng mga Bumibisita sa Tagaytay Picnic Grove',
       subtitle:
-        'Buod ng mga itinatampok ng mga nag-review sa Google Maps tungkol sa parke na ito — ang maganda at ang tapat na mga babala — kasama ang pinagmulan at petsa ng pag-sync sa ibaba.',
-      fromGoogle: '评价来自谷歌地图用户评价 点击查看谷歌地图全部评价：',
+        'Rating at bilang ng review mula sa Google Maps, sinuri noong 2026-10-18. Basahin ang mga karanasan ng bisita sa orihinal na pinagmulan.',
+      fromGoogle: 'Source: Google Maps. Read visitor reviews:',
       ratingLabel: 'Rating sa Google',
       countLabel: 'Mga review sa Google',
-      viewAll: '在谷歌地图查看全部评价',
-      sourceNote: '同步自 Google 地图用户评价，同步时间 2026 年 9 月；版权归原作者与 Google 地图所有',
+      viewAll: 'Read reviews on Google Maps',
+      sourceNote: 'Google Maps rating and review-count snapshot checked 2026-10-18; figures may change.',
       syncLine:
-        '评分与评价数同步自谷歌地图（Google Maps）用户评价 · 2026 年 9 月 · 点击查看谷歌地图全部评价↗',
+        'Google Maps snapshot · checked 2026-10-18 · view current reviews ↗',
       authorLabel: 'Mga review ng gumagamit ng Google Maps (buod)',
       positiveLabel: 'Pinupuri ng mga bumibisita',
       criticalLabel: 'Mga babala ng mga bumibisita',
@@ -278,8 +278,8 @@ export const fil: FullTranslations = {
       title: 'Mga Pinagmumulan at Sanggunian',
       subtitle:
         'Ang gabay na ito ay independiyente at hindi opisyal. Ang lahat ng nilalaman ay mula sa mga pampublikong pinagmumulan sa ibaba — mangyaring kumpirmahin ang mga detalyeng sensitibo sa oras sa mga opisyal na channel bago maglakbay.',
-      reviewsEntry: '评价 · 同步时间 2026 年 9 月',
-      reviewsNote: '同步自 Google 地图用户评价，同步时间 2026 年 9 月；版权归原作者与 Google 地图所有',
+      reviewsEntry: 'Maps snapshot · checked 2026-10-18',
+      reviewsNote: 'Google Maps rating and review-count snapshot checked 2026-10-18; figures may change.',
       outboundTitle: 'Mga opisyal at awtoritatibong link',
       outboundLead:
         'Para sa mga opisyal na update at impormasyon ng turismo ng rehiyon, bisitahin ang opisyal na portal ng turismo ng Lungsod ng Tagaytay / Cavite at ang bulletin ng bulkan ng PHIVOLCS.',
@@ -323,7 +323,7 @@ export const fil: FullTranslations = {
       description: 'Isang magandang parke sa tuktok ng burol sa Tagaytay Ridge na may malawak na tanawin ng Lawa ng Taal at Bulkang Taal, na may mga cottage para sa piknik, zipline, cable car, pagsakay sa kabayo, at mga eco-trail.',
       area: 'Tinatayang 13.5 ektarya ng gumugulong na lupain',
       openingHours: {
-        weekday: 'Lunes–Linggo',
+        weekday: 'Lun–Biy 08:00–20:00 · Sab 09:00–21:00 · Lin 07:00–20:00',
         note: 'Ang oras ay maaaring magbago; suriin ang Google Maps para sa pinakabago.',
       },
       address: {
@@ -357,7 +357,7 @@ export const fil: FullTranslations = {
         'bbq-picnic': 'DIY BBQ piknik — ang sentro ng tradisyon ng pamilya sa Tagaytay.',
         'golden-hour': 'Golden Hour sa tanawin — ang pinakamagandang sandali para maglarawan sa parke.',
         'kids-playground': 'Palaruan ng mga bata — malawak na espasyo para makatakbo ang maliliit.',
-        'misty-morning': 'Maagang hamog sa tagaytay — dumating ng 7:00 AM para sa pinakatahimik na oras.',
+        'misty-morning': 'Maagang hamog sa tagaytay — dumating ng 8:00 AM para sa pinakatahimik na oras.',
         'sunset-terrace': 'Terrace para manood ng lubog na araw — hangin, malamig na hangin, kulay amber na langit.',
         'park-entrance': 'Pasukan ng parke — hawak na ang mga ticket, nagsisimula na ang paglalakad sa tagaytay.',
       },
@@ -365,11 +365,11 @@ export const fil: FullTranslations = {
     faq: [
       {
         question: 'Ano ang bayad sa pagpasok sa Tagaytay Picnic Grove?',
-        answer: 'Ang parke ay naniningil ng bayad sa pagpasok. Ang mga makasaysayang rate ng sanggunian ay nasa PHP 50–75 bawat tao. Ang mga residente, nakatatanda, at mag-aaral ay maaaring karapat-dapat sa mga diskwento sa ilalim ng batas ng Pilipinas (RA 9994 / RA 10754). Mangyaring tandaan na ang mga rate ay maaaring magbago nang walang abiso — laging kumpirmahin ang pinakabagong nakapaskil na presyo sa tarangkahan o sa pamamagitan ng tanggapan ng Tagaytay City Tourism o Google Maps.',
+        answer: 'Nakalista sa 2024 Citizen Charter ng Tagaytay City ang PHP 75 bawat bisita. Kumpirmahin sa gate ang kasalukuyang presyo at diskuwento; hiwalay ang bayad sa parking, cottage at rides.',
       },
       {
         question: 'Ano ang mga oras ng pagbubukas? Bukas ba ito araw-araw?',
-        answer: 'Ang Tagaytay Picnic Grove ay karaniwang bumubukas araw-araw mula humigit-kumulang 7:00 AM hanggang 8:00 PM, kabilang ang mga katapusan ng linggo at pista opisyal. Ang oras ay maaaring magbago sa panahon ng masamang panahon, mga alerto ng Bulkang Taal, o mga espesyal na kaganapan. Laging kumpirmahin ang pinakabagong oras sa Google Maps bago umalis.',
+        answer: 'Ayon sa Google Maps: Lunes–Biyernes 8 AM–8 PM, Sabado 9 AM–9 PM, at Linggo 7 AM–8 PM (sinuri 2026-10-18). Maaaring iba ang oras sa holiday at sa mga aktibidad; kumpirmahin bago bumiyahe.',
       },
       {
         question: 'Maaari ba akong magdala ng sariling pagkain at ihawan para sa BBQ piknik?',
@@ -425,7 +425,7 @@ export const fil: FullTranslations = {
         },
         {
         question: 'Anong oras nagsasara ang Picnic Grove, at kailan ang huling pagpasok?',
-        answer: 'Ang nakasulat na oras ng pagsasara ay 8:00 ng gabi (20:00) araw-araw. Ang pagbebenta ng ticket at mga counter ng aktibidad (zipline, cable car, pagsakay sa kabayo) ay karaniwang nagtatapos 30–60 minuto bago magsara, at mas maaga kung masama ang panahon o mababa ang visibility. Para sa mga aktibidad, dumating nang hindi lalampas ng 5:00–6:00 ng hapon; para sa sunset picnic, ang pagdating ng 4:00–5:00 ng hapon ay sapat na para sa 2–3 oras.',
+        answer: 'Ayon sa Google Maps: Lunes–Biyernes 8 AM–8 PM, Sabado 9 AM–9 PM, at Linggo 7 AM–8 PM (sinuri 2026-10-18). Maaaring iba ang oras sa holiday at sa mga aktibidad; kumpirmahin bago bumiyahe. Hindi pa kumpirmado ang huling pagpasok at oras ng rides; magtanong sa ticket office.',
         },
         {
         question: 'Magkano ang bayad sa paradahan, at libre ba ito?',
@@ -599,7 +599,7 @@ export const fil: FullTranslations = {
         weather: '29–30 °C sa araw, 18–20 °C sa gabi, 4–13 araw ng ulan. Lumalabo ang tanawin sa hapon at mataas ang UV index sa tanghali.',
         volcano: 'Karaniwang malinaw sa umaga, maulap sa hapon. Ang init ay nagpapalabo ng mga larawang malayo mula bandang 13:00 pataas.',
         nature: 'Pinakam tuyong buwan: nagiging ginto ang mga damo, aktibo ang mga paruparo at tutubi, at ang mga namumulaklak na puno ay umaakit ng mga sunbird. Pinakamababa ang tubig sa mga talon at bukal.',
-        advice: 'Bumisita mula 07:00–11:00, magpahinga sa lilim sa tanghali, at bumalik para sa golden hour ng 16:30–17:30. Mas mahalaga ang tubig at electrolytes kaysa payong dito.',
+        advice: 'Bumisita mula 08:00–11:00, magpahinga sa lilim sa tanghali, at bumalik para sa golden hour ng 16:30–17:30. Mas mahalaga ang tubig at electrolytes kaysa payong dito.',
       },
       {
         season: 'Southwest monsoon',
@@ -631,7 +631,7 @@ export const fil: FullTranslations = {
         icon: '🅿️',
         what: 'Isang sementadong bayad na paradahan sa tabi ng pangunahing pasukan, na may magkahiwalay na lugar para sa kotse, van, bus at motorsiklo, pati na drop-off point para sa taxi at tricycle.',
         where: 'Direkta sa pangunahing tarangkahan sa Tagaytay–Calamba Road; 1–3 minutong lakad papuntang ticket booth.',
-        tips: 'Maaaring mapuno ang paradahan bago mag-10:00 tuwing katapusan ng linggo at holiday. Dumating nang 07:00–08:00, itago ang mga mahahalagang bagay, at tandaan na ang flat-rate na bayad ay bawat pagpasok.',
+        tips: 'Maaaring mapuno ang paradahan bago mag-10:00 tuwing katapusan ng linggo at holiday. Dumating nang 08:00–09:00, itago ang mga mahahalagang bagay, at tandaan na ang flat-rate na bayad ay bawat pagpasok.',
       },
       {
         type: 'Pagkain at inumin (uri lamang)',
@@ -710,8 +710,8 @@ export const fil: FullTranslations = {
         summary: 'Dalawang golden window — maagang umaga para sa linaw at hapon para sa liwanag — kung saan ang mainit na tanghali ay ginugugol sa detalye, kagubatan at mga ibon.',
         pace: 'Nakatutok · 5–6 oras · maagang simula',
         stops: [
-          'Dumating sa oras ng pagbukas (bandang 07:00) kapag pinakamalinaw ang hangin at malamang na walang mababang ulap sa caldera.',
-          '07:00–09:00 – Tanawin ng Bulkang Taal mula sa mga terrace; ang maikling telephoto (70–200 mm class) ay nagpapalapit sa Volcano Island, at nakakatulong ang polariser para bawasan ang haze.',
+          'Dumating sa oras ng pagbukas (bandang 08:00) kapag pinakamalinaw ang hangin at malamang na walang mababang ulap sa caldera.',
+          '08:00–09:00 – Tanawin ng Bulkang Taal mula sa mga terrace; ang maikling telephoto (70–200 mm class) ay nagpapalapit sa Volcano Island, at nakakatulong ang polariser para bawasan ang haze.',
           '09:00–11:00 – Mga daanan sa gilid ng gulod para sa mga ibon, paruparo at detalye ng pine forest; sulit dito ang macro lens.',
           '11:00–14:00 – Magpahinga at i-back up ang mga file; patag at matigas ang liwanag para sa landscape.',
           '16:00–17:30 – Golden hour mula sa mga viewpoint sa kanluran, pagkatapos ay ang gradient ng paglubog ng araw sa ibabaw ng lawa.',
@@ -884,7 +884,7 @@ export const fil: FullTranslations = {
           ],
           time: '1.5–2 oras kapag magaan ang trapiko; 2.5–3.5+ oras tuwing katapusan ng linggo at holiday',
           cost: 'Gasolina plus toll (humigit-kumulang PHP 300–500 na toll bawat biyahe) plus bayad sa paradahan',
-          notes: 'Dumating nang 07:00–08:00 para sigurado ang paradahan. Asahan ang matinding trapiko tuwing Linggo at sa Semana Santa, linggo ng Pasko at long weekend.',
+          notes: 'Dumating nang 08:00–09:00 para sigurado ang paradahan. Asahan ang matinding trapiko tuwing Linggo at sa Semana Santa, linggo ng Pasko at long weekend.',
         },
         {
           mode: 'Mula sa Clark International Airport (CRK) o hilagang Luzon',
@@ -911,10 +911,11 @@ export const fil: FullTranslations = {
       ],
     },
     sources: [
+      { name: 'Tagaytay City Citizen Charter (2024), pp. 184–189', url: 'https://tagaytay.gov.ph/pdf/CityGovernmentofTagaytay_CC_20240327.pdf', note: 'Entrance: PHP 75 per guest; facility-use rates: PHP 150, 250, 400 or 600. Checked 2026-10-18; confirm current rates at the gate.' },
       { name: 'PAGASA — mga climate normal at bulletin ng tropical cyclone', url: 'https://www.pagasa.dost.gov.ph/', note: 'Mga seasonal climate normal (1991–2020) at abiso ng bagyo na ginamit sa talahanayan ng estratehiya ayon sa panahon.' },
       { name: 'Open-Meteo — pagtataya para sa mga coordinate ng parke', url: 'https://open-meteo.com/', note: 'Kasalukuyang lagay ng panahon at mga halaga ng 7-araw na pagtataya na ipinapakita sa pahinang ito.' },
       { name: 'Google Maps — listing ng Tagaytay Picnic Grove', url: 'https://maps.app.goo.gl/oM7D9qUjFvZbXdNj8', note: 'Mga koordinata, direksyon, katayuan ng pagbukas, larawan at mga review ng gumagamit; rating at bilang ng review na naka-sync noong Setyembre 2026.' },
-      { name: 'Opisyal na Portal ng Lungsod ng Tagaytay (City Tourism)', url: 'https://tagaytaycity.ph/picnic-grove/', note: 'Opisyal na pahina ng parke — sanggunian ng mga aktibidad at rate (may ilang numerong luma na).' },
+      { name: 'Opisyal na Portal ng Lungsod ng Tagaytay (City Tourism)', url: 'https://www.tagaytay.gov.ph/tourism.html', note: 'Opisyal na pahina ng parke — sanggunian ng mga aktibidad at rate (may ilang numerong luma na).' },
       { name: 'PHIVOLCS (Philippine Institute of Volcanology and Seismology)', url: 'https://www.phivolcs.dost.gov.ph/', note: 'Kasalukuyang antas ng alerto ng Bulkang Taal at mga abiso.' },
       { name: 'Wikipediang Tagalog — Tagaytay Picnic Grove', url: 'https://tl.wikipedia.org/wiki/Tagaytay_Picnic_Grove', note: 'Sanggunian ng lokasyon, tagapamahala at uri ng parke.' },
       { name: 'Islands Philippines — Tagaytay Picnic Grove', url: 'https://islandsphilippines.com/calabarzon/tagaytay/tagaytaypicnicgrove.php/history.php', note: 'Lawak ng parke (13.5 ektarya) at background ng mga pasilidad.' },
@@ -925,7 +926,7 @@ export const fil: FullTranslations = {
     fees: {
       entrance: {
         label: 'Bayad sa Pagpasok (bawat tao)',
-        note: 'Ang mga nakatatanda at may kapansanan (PWD) ay maaaring makakuha ng 20% na diskwento na ipinag-uutos ng batas ng Pilipinas (RA 9994 / RA 10754). Ang mga mag-aaral ay maaari ring kwalipikado — magdala ng wastong ID.',
+        note: 'Nakalista sa 2024 Citizen Charter ng Tagaytay City ang PHP 75 bawat bisita. Kumpirmahin sa gate ang kasalukuyang presyo at diskuwento; hiwalay ang bayad sa parking, cottage at rides.',
       },
       cottages: {
         label: 'Pag-upa ng Cottage / Kubo para sa Piknik',
@@ -977,7 +978,7 @@ export const fil: FullTranslations = {
         { day: 'Linggo & mga pista opisyal ng Pilipinas', rating: '★★ Iwasan kung maaari', point: 'Asahan ang maraming tao, mahabang pila sa pagpasok, napakalimitadong paradahan, at malaking trapiko sa SLEX pauwi. Ang mga bihasang bumibisita ay madalas na laktawan ang Linggo nang buo.' },
       ],
       hourly: [
-        { window: '7:00 – 10:00 AM', rating: '★★★★★', point: 'Sariwang malamig na hangin, malambot na liwanag sa gilid ng Bulkang Taal para sa mga larawan, at halos walang tao sa parke.' },
+        { window: '8:00 – 10:00 AM', rating: '★★★★★', point: 'Sariwang malamig na hangin, malambot na liwanag sa gilid ng Bulkang Taal para sa mga larawan, at halos walang tao sa parke.' },
         { window: '10:00 AM – 3:00 PM', rating: '★★★', point: 'Maliwanag na sikat ng araw sa itaas, malakas na UV, at pinakamalakas na ingay ng tao. Maganda para sa mga piknik sa ilalim ng lilim; hindi perpekto para sa mga larawan ng tanawin.' },
         { window: '3:30 – 5:30 PM', rating: '★★★★★', point: 'Liwanag ng golden-hour para sa pagkuha ng larawan ng tanawin ng Taal, lumalamig na hangin, klasikong kapaligiran ng lubog na araw.' },
         { window: '5:30 – 8:00 PM', rating: '★★★', point: 'Masigla ang mga hapunang BBQ sa mga cottage; tandaan na ang parke ay nagsasara bandang 8:00 PM.' },
@@ -1056,7 +1057,7 @@ export const fil: FullTranslations = {
           'Pangunahing ruta: South Luzon Expressway (SLEX) patungong timog → lumabas sa Santa Rosa → dumaan sa Santa Rosa–Tagaytay Road paakyat ng Tagaytay → sa Olivarez Rotunda, lumiko pakaliwa patungong Tagaytay–Calamba Road → magpatuloy pa-silangan ng 4–5 km. Ang Picnic Grove ay nasa kanang bahagi.',
           'Alternatibong ruta (mas mabigat sa ilang oras): SLEX → labasan ng Carmona → Governor\u2019s Drive → lumiko patungong Aguinaldo Highway → Silang → Tagaytay Rotunda.',
           'Oras ng pagmamaneho: 1.5–2 oras na may magaan na trapiko. Ang mga katapusan ng linggo at mahabang katapusan ng linggo sa Pilipinas ay regular na umaabot ng 2.5–3.5+ oras dahil sa pagsisikip sa SLEX at paakyat na Santa Rosa–Tagaytay Road.',
-          'Dumating ng 7:00–8:00 AM sa mga katapusan ng linggo at pista opisyal para maunahan ang mga pila at matiyak ang paradahan sa loob ng lote.',
+          'Dumating ng 8:00–9:00 AM sa mga katapusan ng linggo at pista opisyal para maunahan ang mga pila at matiyak ang paradahan sa loob ng lote.',
         ],
       },
       commute: {
@@ -1084,7 +1085,7 @@ export const fil: FullTranslations = {
         bullets: [
           'Itinalagang sementadong lote ng paradahan mismo sa tabi ng pangunahing tarangkahan; lakad ng 1–3 minuto patungong booth ng ticket.',
           'Flat na bayad sa bawat pagpasok para sa mga sasakyan, SUV, at van; ang mga bus ay may magkahiwalay at mas mataas na rate; ang mga motorsiklo ay may itinalagang lugar ng paradahan para sa motorsiklo.',
-          'Sa mga katapusan ng linggo at pista opisyal ang lote ay mabilis mapuno (kadalasan bago mag-10:00 AM). Dumating ng 7:00–8:00 AM para makakuha ng puwesto.',
+          'Sa mga katapusan ng linggo at pista opisyal ang lote ay mabilis mapuno (kadalasan bago mag-10:00 AM). Dumating ng 8:00–9:00 AM para makakuha ng puwesto.',
           'Kung puno na ang lote sa lugar: ang mga lokal na residente ay kung minsan ay nag-aalok ng impormal na paradahan sa gilid ng kalsada sa kahabaan ng Tagaytay–Calamba Road. Kumpirmahin nang malinaw ang presyo bago pumasok at tandaan na ang mga puwestong ito ay hindi pinamamahalaan ng pamahalaan ng lungsod.',
           'Ang People\u2019s Park in the Sky ay may sariling lote ng paradahan na humigit-kumulang 2–3 km pakanluran; ang paglalakad sa pagitan ng dalawang parke ay posible (≈2 km) ngunit hindi inirerekomenda dahil ang makitid na gilid ng kalsada ay walang bangketa.',
         ],
